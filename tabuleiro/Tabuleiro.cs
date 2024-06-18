@@ -2,19 +2,26 @@
 
 namespace tabuleiro
 {
-    class Tabuleiro(
-        Int32 linhas, Int32 colunas
-    )
+    class Tabuleiro
     {
-        public Int32 Linhas { get; protected set; } = linhas;
-        public Int32 Colunas { get; protected set; } = colunas;
-        public List<Peca> PecasEmJogo { get; protected set; } = [];
-        public List<Peca> PecasCapturadas { get; protected set; } = [];
+        public Int32 Linhas { get; protected set; }
+        public Int32 Colunas { get; protected set; }
+        public List<Peca> PecasEmJogo { get; protected set; }
+        public List<Peca> PecasCapturadas { get; protected set; }
 
-        public Peca? RetornarAPecaEmJogo(PosicaoMatriz pos)
+        public Tabuleiro(Int32 linhas, Int32 colunas)
+        {
+            Linhas = linhas;
+            Colunas = colunas;
+            PecasEmJogo = [];
+            PecasCapturadas = [];
+            ColocarPecas();
+        }
+
+        public Peca? RetornarAPecaEmJogo(PosicaoXadrez pos)
         {
             foreach (Peca peca in PecasEmJogo)
-                if (peca.PosicaoMatriz == pos)
+                if (peca.PosicaoXadrez == pos)
                     return peca;
 
             return null;
@@ -23,7 +30,7 @@ namespace tabuleiro
         /* 
          * Verifica se há uma peça inimiga na posição dada do tabuleiro.
          */
-        public Boolean TemInimigo(Peca peca, PosicaoMatriz pos)
+        public Boolean TemInimigo(Peca peca, PosicaoXadrez pos)
         {
             Peca? p = RetornarAPecaEmJogo(pos);
 
@@ -36,7 +43,7 @@ namespace tabuleiro
         /* 
          * Verifica se a posição dada está vaga no tabuleiro.
          */
-        public Boolean EstaVaga(PosicaoMatriz pos)
+        public Boolean EstaVaga(PosicaoXadrez pos)
         {
             Peca? p = RetornarAPecaEmJogo(pos);
 
@@ -46,11 +53,13 @@ namespace tabuleiro
         /* 
          * Verifica se a posição dada está dentro dos limites do tabuleiro.
          */
-        public Boolean PosicaoValida(PosicaoMatriz pos)
+        public Boolean PosicaoValida(PosicaoXadrez pos)
         {
+            PosicaoMatriz posicaoMatriz = pos.ToPosicaoMatriz();
+
             if (
-                pos.Linha >= 0 && pos.Linha < Linhas &&
-                pos.Coluna >= 0 && pos.Coluna < Colunas
+                posicaoMatriz.Linha >= 0 && posicaoMatriz.Linha < Linhas &&
+                posicaoMatriz.Coluna >= 0 && posicaoMatriz.Coluna < Colunas
             )
                 return true;
 
@@ -60,44 +69,53 @@ namespace tabuleiro
         /* 
          * Coloca uma peça na tabuleiro se a posição dada for válida e estiver vaga.
          */
-        public void ColocarPeca(Peca peca, PosicaoMatriz posicaoMatriz)
+        public void ColocarPeca(Peca peca, Char coluna, Int32 linha)
         {
             Boolean posicaoValida, estaVaga;
+            PosicaoXadrez posicaoXadrez;
+            Int32 teste;
 
-            posicaoValida = PosicaoValida(posicaoMatriz);
-            estaVaga = EstaVaga(posicaoMatriz);
+            teste = (Int32)coluna;
+
+            if (!(teste >= 97 && teste <= 122))
+                teste += 32;
+
+            coluna = (Char)teste;
+            teste = (Int32)coluna;
+
+            if (!(teste >= 97 && teste <= 122))
+                throw new TabuleiroException("Erro na colocação da peça: posição inválida! ");
+
+            posicaoXadrez = new(coluna, linha);
+
+            posicaoValida = PosicaoValida(posicaoXadrez);
+            estaVaga = EstaVaga(posicaoXadrez);
 
             if (posicaoValida && estaVaga)
             {
-                if (peca.PosicaoMatriz == null)
-                    peca.SetPosicaoMatriz(this, posicaoMatriz);
-                else
-                {
-                    peca.PosicaoMatriz.Linha = posicaoMatriz.Linha;
-                    peca.PosicaoMatriz.Coluna = posicaoMatriz.Coluna;
-                }
-
+                peca.SetPosicaoXadrez(this, posicaoXadrez);
+                peca.SetEmJogo(this, true);
+                peca.SetTabuleiro(this, this);
                 PecasEmJogo.Add(peca);
             }
             else
             {
                 if (!posicaoValida)
                     throw new TabuleiroException(
-                        $"Posição ({posicaoMatriz.Linha}, {posicaoMatriz.Coluna}) " +
-                        $"não existe neste tabuleiro!"
+                        $"Posição ({posicaoXadrez}) não existe neste tabuleiro!"
                     );
 
                 if (!estaVaga)
                     throw new TabuleiroException(
-                        $"Posição ({posicaoMatriz.Linha}, {posicaoMatriz.Coluna}) " +
-                        $"está ocupada!"
+                        $"Posição ({posicaoXadrez}) está ocupada!"
                     );
             }
         }
 
         public void ColocarPecas()
         {
-
+            ColocarPeca(new Torre(Cor.Branco), 'a', 1);
+            ColocarPeca(new Torre(Cor.Branco), 'h', 1);
         }
     }
 }

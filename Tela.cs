@@ -1,4 +1,5 @@
-﻿using tabuleiro;
+﻿using extra;
+using tabuleiro;
 
 namespace xadrez_3
 {
@@ -9,6 +10,7 @@ namespace xadrez_3
             Int32 i, j;
             Boolean impresso;
             List<Peca> pecasEmJogo;
+            PosicaoMatriz? posicaoMatriz;
 
             pecasEmJogo = tabuleiro.PecasEmJogo;
 
@@ -19,10 +21,9 @@ namespace xadrez_3
                     impresso = false;
                     foreach (Peca item in pecasEmJogo)
                     {
-                        if (
-                            item.PosicaoMatriz?.Linha == i &&
-                            item.PosicaoMatriz?.Coluna == j
-                        )
+                        posicaoMatriz = item.PosicaoXadrez?.ToPosicaoMatriz();
+
+                        if (posicaoMatriz?.Linha == i && posicaoMatriz?.Coluna == j)
                         {
                             Console.Write(item + " ");
                             impresso = true;
