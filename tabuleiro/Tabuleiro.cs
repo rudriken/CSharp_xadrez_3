@@ -3,13 +3,13 @@
 namespace tabuleiro
 {
     class Tabuleiro(
-        Int32 linhas, Int32 colunas, List<Peca> pecasEmJogo, List<Peca> pecasCapturadas
+        Int32 linhas, Int32 colunas
     )
     {
         public Int32 Linhas { get; protected set; } = linhas;
         public Int32 Colunas { get; protected set; } = colunas;
-        public List<Peca> PecasEmJogo { get; protected set; } = pecasEmJogo;
-        public List<Peca> PecasCapturadas { get; protected set; } = pecasCapturadas;
+        public List<Peca> PecasEmJogo { get; protected set; } = [];
+        public List<Peca> PecasCapturadas { get; protected set; } = [];
 
         public Peca? RetornarAPecaEmJogo(PosicaoMatriz pos)
         {
@@ -57,9 +57,47 @@ namespace tabuleiro
             return false;
         }
 
-        //public void ColocarPeca(Peca peca, PosicaoMatriz posicaoMatriz)
-        //{
+        /* 
+         * Coloca uma peça na tabuleiro se a posição dada for válida e estiver vaga.
+         */
+        public void ColocarPeca(Peca peca, PosicaoMatriz posicaoMatriz)
+        {
+            Boolean posicaoValida, estaVaga;
 
-        //}
+            posicaoValida = PosicaoValida(posicaoMatriz);
+            estaVaga = EstaVaga(posicaoMatriz);
+
+            if (posicaoValida && estaVaga)
+            {
+                if (peca.PosicaoMatriz == null)
+                    peca.SetPosicaoMatriz(this, posicaoMatriz);
+                else
+                {
+                    peca.PosicaoMatriz.Linha = posicaoMatriz.Linha;
+                    peca.PosicaoMatriz.Coluna = posicaoMatriz.Coluna;
+                }
+
+                PecasEmJogo.Add(peca);
+            }
+            else
+            {
+                if (!posicaoValida)
+                    throw new TabuleiroException(
+                        $"Posição ({posicaoMatriz.Linha}, {posicaoMatriz.Coluna}) " +
+                        $"não existe neste tabuleiro!"
+                    );
+
+                if (!estaVaga)
+                    throw new TabuleiroException(
+                        $"Posição ({posicaoMatriz.Linha}, {posicaoMatriz.Coluna}) " +
+                        $"está ocupada!"
+                    );
+            }
+        }
+
+        public void ColocarPecas()
+        {
+
+        }
     }
 }

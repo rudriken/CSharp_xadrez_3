@@ -2,8 +2,8 @@
 
 namespace tabuleiro
 {
-    class Torre(PosicaoMatriz? posicaoMatriz, Cor cor, Boolean emJogo, Tabuleiro tabuleiro)
-        : Peca(posicaoMatriz, cor, emJogo, tabuleiro)
+    class Torre(PosicaoMatriz? posicaoMatriz, Cor cor)
+        : Peca(posicaoMatriz, cor)
     {
         public override String ToString()
         {
@@ -19,9 +19,12 @@ namespace tabuleiro
             PosicaoMatriz posicao;
             Boolean temInimigo, estaVaga, posicaoValida;
 
-            matriz = new Boolean[Tabuleiro.Linhas, Tabuleiro.Colunas];
+            if (Tabuleiro != null)
+                matriz = new Boolean[Tabuleiro.Linhas, Tabuleiro.Colunas];
+            else
+                matriz = new Boolean[0, 0];
 
-            if (PosicaoMatriz != null)
+            if (PosicaoMatriz != null && Tabuleiro != null)
             {
                 // NORTE:
                 posicao = new(PosicaoMatriz.Linha, PosicaoMatriz.Coluna);
@@ -58,7 +61,7 @@ namespace tabuleiro
                 // SUL:
                 posicao = new(PosicaoMatriz.Linha, PosicaoMatriz.Coluna);
                 posicao.Linha++;
-                temInimigo = Tabuleiro.TemInimigo(this,posicao);
+                temInimigo = Tabuleiro.TemInimigo(this, posicao);
                 estaVaga = Tabuleiro.EstaVaga(posicao);
                 posicaoValida = Tabuleiro.PosicaoValida(posicao);
                 while ((!temInimigo || estaVaga) && posicaoValida)
