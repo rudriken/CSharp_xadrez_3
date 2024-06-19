@@ -29,6 +29,10 @@ namespace xadrez_3
             else
                 movimentosPossiveis = new Boolean[tabuleiro.Linhas, tabuleiro.Colunas];
 
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("  a b c d e f g h \n");
+            Console.ForegroundColor = corLetraOriginal;
+
             for (i = 0; i < tabuleiro.Linhas; i++)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -74,7 +78,9 @@ namespace xadrez_3
                 }
 
 
-                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine((8 - i) + " ");
+                Console.ForegroundColor = corLetraOriginal;
             }
 
             Console.ForegroundColor = ConsoleColor.Green;
