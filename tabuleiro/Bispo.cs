@@ -49,7 +49,7 @@ namespace tabuleiro
                         inimigoContado = true;
                     }
 
-                    if (inimigoContado)
+                    if (inimigoContado || !estaVaga)
                         break;
 
                     posicaoMatriz.Linha--;
@@ -82,7 +82,7 @@ namespace tabuleiro
                         inimigoContado = true;
                     }
 
-                    if (inimigoContado)
+                    if (inimigoContado || !estaVaga)
                         break;
 
                     posicaoMatriz.Linha++;
@@ -115,7 +115,7 @@ namespace tabuleiro
                         inimigoContado = true;
                     }
 
-                    if (inimigoContado)
+                    if (inimigoContado || !estaVaga)
                         break;
 
                     posicaoMatriz.Linha++;
@@ -148,7 +148,7 @@ namespace tabuleiro
                         inimigoContado = true;
                     }
 
-                    if (inimigoContado)
+                    if (inimigoContado || !estaVaga)
                         break;
 
                     posicaoMatriz.Linha--;

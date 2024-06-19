@@ -2,15 +2,15 @@
 
 namespace tabuleiro
 {
-    class Torre(Cor cor) : Peca(cor)
+    class Dama(Cor cor) : Peca(cor)
     {
         public override String ToString()
         {
-            return "T";
+            return "D";
         }
 
         /* 
-         * Retorna uma matriz de movimentos possíveis para a Torre
+         * Retorna uma matriz de movimentos possíveis para a Dama
          */
         public override Boolean[,] MovimentosPossiveis()
         {
@@ -57,6 +57,39 @@ namespace tabuleiro
                     posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 }
 
+                // NORDESTE:
+                posicaoXadrez = new(PosicaoXadrez.Coluna, PosicaoXadrez.Linha);
+                posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
+                posicaoMatriz.Linha--;
+                posicaoMatriz.Coluna++;
+                temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
+                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
+                inimigoContado = false;
+                while (true)
+                {
+                    if (!posicaoValida)
+                        break;
+
+                    if (estaVaga)
+                        matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+
+                    if (temInimigo && !inimigoContado)
+                    {
+                        matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+                        inimigoContado = true;
+                    }
+
+                    if (inimigoContado || !estaVaga)
+                        break;
+
+                    posicaoMatriz.Linha--;
+                    posicaoMatriz.Coluna++;
+                    temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
+                    estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                    posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
+                }
+
                 // LESTE:
                 posicaoXadrez = new(PosicaoXadrez.Coluna, PosicaoXadrez.Linha);
                 posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
@@ -82,6 +115,39 @@ namespace tabuleiro
                     if (inimigoContado || !estaVaga)
                         break;
 
+                    posicaoMatriz.Coluna++;
+                    temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
+                    estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                    posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
+                }
+
+                // SUDESTE:
+                posicaoXadrez = new(PosicaoXadrez.Coluna, PosicaoXadrez.Linha);
+                posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
+                posicaoMatriz.Linha++;
+                posicaoMatriz.Coluna++;
+                temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
+                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
+                inimigoContado = false;
+                while (true)
+                {
+                    if (!posicaoValida)
+                        break;
+
+                    if (estaVaga)
+                        matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+
+                    if (temInimigo && !inimigoContado)
+                    {
+                        matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+                        inimigoContado = true;
+                    }
+
+                    if (inimigoContado || !estaVaga)
+                        break;
+
+                    posicaoMatriz.Linha++;
                     posicaoMatriz.Coluna++;
                     temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
                     estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
@@ -119,6 +185,39 @@ namespace tabuleiro
                     posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 }
 
+                // SUDOESTE:
+                posicaoXadrez = new(PosicaoXadrez.Coluna, PosicaoXadrez.Linha);
+                posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
+                posicaoMatriz.Linha++;
+                posicaoMatriz.Coluna--;
+                temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
+                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
+                inimigoContado = false;
+                while (true)
+                {
+                    if (!posicaoValida)
+                        break;
+
+                    if (estaVaga)
+                        matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+
+                    if (temInimigo && !inimigoContado)
+                    {
+                        matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+                        inimigoContado = true;
+                    }
+
+                    if (inimigoContado || !estaVaga)
+                        break;
+
+                    posicaoMatriz.Linha++;
+                    posicaoMatriz.Coluna--;
+                    temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
+                    estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                    posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
+                }
+
                 // OESTE:
                 posicaoXadrez = new(PosicaoXadrez.Coluna, PosicaoXadrez.Linha);
                 posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
@@ -149,9 +248,43 @@ namespace tabuleiro
                     estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
                     posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 }
+
+                // NOROESTE:
+                posicaoXadrez = new(PosicaoXadrez.Coluna, PosicaoXadrez.Linha);
+                posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
+                posicaoMatriz.Linha--;
+                posicaoMatriz.Coluna--;
+                temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
+                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
+                inimigoContado = false;
+                while (true)
+                {
+                    if (!posicaoValida)
+                        break;
+
+                    if (estaVaga)
+                        matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+
+                    if (temInimigo && !inimigoContado)
+                    {
+                        matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+                        inimigoContado = true;
+                    }
+
+                    if (inimigoContado || !estaVaga)
+                        break;
+
+                    posicaoMatriz.Linha--;
+                    posicaoMatriz.Coluna--;
+                    temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
+                    estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                    posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
+                }
             }
 
             return matriz;
         }
+
     }
 }
