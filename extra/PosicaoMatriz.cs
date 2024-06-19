@@ -17,7 +17,8 @@
             coluna = (Char)('a' + Coluna);
 
             return new PosicaoXadrez(coluna, linha);
-        }
+        }       
+
 
         public override string ToString()
         {

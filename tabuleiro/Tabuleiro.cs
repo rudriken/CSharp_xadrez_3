@@ -18,11 +18,15 @@ namespace tabuleiro
             ColocarPecas();
         }
 
-        public Peca? RetornarAPecaEmJogo(PosicaoXadrez pos)
+        public Peca? RetornarAPecaEmJogo(PosicaoXadrez? pos)
         {
             foreach (Peca peca in PecasEmJogo)
-                if (peca.PosicaoXadrez == pos)
-                    return peca;
+                if (peca.PosicaoXadrez != null)
+                    if (
+                        peca.PosicaoXadrez.Linha == pos?.Linha &&
+                        peca.PosicaoXadrez.Coluna == pos?.Coluna
+                    )
+                        return peca;
 
             return null;
         }
@@ -34,8 +38,9 @@ namespace tabuleiro
         {
             Peca? p = RetornarAPecaEmJogo(pos);
 
-            if (p?.Cor != peca.Cor)
-                return true;
+            if (p != null)
+                if (p.Cor != peca.Cor)
+                    return true;
 
             return false;
         }
@@ -115,7 +120,8 @@ namespace tabuleiro
         public void ColocarPecas()
         {
             ColocarPeca(new Torre(Cor.Branco), 'a', 1);
-            ColocarPeca(new Torre(Cor.Branco), 'h', 1);
+            ColocarPeca(new Torre(Cor.Branco), 'd', 6);
+            ColocarPeca(new Torre(Cor.Preto), 'h', 6);
         }
     }
 }

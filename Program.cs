@@ -8,10 +8,17 @@ namespace xadrez_3
         static void Main()
         {
             Tabuleiro tab;
+            String? origem;
 
             tab = new(8, 8);
 
-            Tela.ImprimirTabuleiro(tab);
+            Tela.ImprimirTabuleiro(tab, null);
+
+            Console.Write("Origem: ");
+            origem = Console.ReadLine();
+
+            Console.Clear();
+            Tela.ImprimirTabuleiro(tab, origem);
         }
     }
 }
