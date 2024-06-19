@@ -5,6 +5,9 @@ namespace xadrez_3
 {
     class Tela
     {
+        /* 
+         * Responsável por imprimir o tabuleiro com as peças em jogo.
+         */
         public static void ImprimirTabuleiro(Tabuleiro tabuleiro, String? posicaoEscolhida)
         {
             Int32 i, j;
@@ -13,6 +16,7 @@ namespace xadrez_3
             PosicaoMatriz? posicaoMatriz, posicaoEscolhidaMatriz;
             PosicaoXadrez? posicaoEscolhidaXadrez;
             ConsoleColor corFundoOriginal = Console.BackgroundColor;
+            ConsoleColor corLetraOriginal = Console.ForegroundColor;
             Boolean[,] movimentosPossiveis;
             Peca? pecaEscolhida;
 
@@ -27,6 +31,10 @@ namespace xadrez_3
 
             for (i = 0; i < tabuleiro.Linhas; i++)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write((8 - i) + " ");
+                Console.ForegroundColor = corLetraOriginal;
+
                 for (j = 0; j < tabuleiro.Colunas; j++)
                 {
                     if (posicaoEscolhidaMatriz != null)
@@ -34,9 +42,7 @@ namespace xadrez_3
                         if (pecaEscolhida != null)
                         {
                             if (movimentosPossiveis[i, j])
-                            {
                                 Console.BackgroundColor = ConsoleColor.DarkGray;
-                            }
                         }
                     }
 
@@ -47,8 +53,16 @@ namespace xadrez_3
 
                         if (posicaoMatriz?.Linha == i && posicaoMatriz?.Coluna == j)
                         {
+                            if (item.Cor == Cor.Branco)
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+
+                            if (item.Cor == Cor.Preto)
+                                Console.ForegroundColor = ConsoleColor.Blue;
+
                             Console.Write(item + " ");
                             impresso = true;
+
+                            Console.ForegroundColor = corLetraOriginal;
                         }
                     }
 
@@ -59,8 +73,13 @@ namespace xadrez_3
                         Console.BackgroundColor = corFundoOriginal;
                 }
 
+
                 Console.WriteLine();
             }
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("  a b c d e f g h \n");
+            Console.ForegroundColor = corLetraOriginal;
         }
     }
 }

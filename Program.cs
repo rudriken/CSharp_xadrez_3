@@ -8,7 +8,7 @@ namespace xadrez_3
         static void Main()
         {
             Tabuleiro tab;
-            String? origem;
+            String? origem, destino;
 
             tab = new(8, 8);
 
@@ -19,6 +19,12 @@ namespace xadrez_3
 
             Console.Clear();
             Tela.ImprimirTabuleiro(tab, origem);
+
+            Console.Write("Destino: ");
+            destino = Console.ReadLine();
+
+            Console.Clear();
+            Tela.ImprimirTabuleiro(tab, destino);
         }
     }
 }

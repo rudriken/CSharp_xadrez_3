@@ -122,6 +122,7 @@ namespace tabuleiro
             ColocarPeca(new Torre(Cor.Branco), 'a', 1);
             ColocarPeca(new Torre(Cor.Branco), 'd', 6);
             ColocarPeca(new Torre(Cor.Preto), 'h', 6);
+            ColocarPeca(new Bispo(Cor.Preto), 'F', 4);
         }
     }
 }

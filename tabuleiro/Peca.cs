@@ -8,6 +8,7 @@ namespace tabuleiro
         public Cor Cor { get; protected set; } = cor;
         public Boolean EmJogo { get; protected set; } = false;
         public Tabuleiro? Tabuleiro { get; protected set; } = null;
+        public Int32 Movimentos { get; protected set; } = 0;
 
         public void SetPosicaoXadrez(Object objeto, PosicaoXadrez pos)
         {
@@ -37,6 +38,16 @@ namespace tabuleiro
                 throw new TabuleiroException(
                     "Sem permissão para alterar o tabuleiro da peça!"
                 );
+        }
+
+        public void IncrementarMovimento()
+        {
+            Movimentos++;
+        }
+
+        public void DecrementarMovimento()
+        {
+            Movimentos--;
         }
 
         public abstract Boolean[,] MovimentosPossiveis();
