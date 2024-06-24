@@ -8,26 +8,18 @@ namespace xadrez_3
         /* 
          * Responsável por imprimir o tabuleiro com as peças em jogo.
          */
-        public static void ImprimirTabuleiro(Tabuleiro tabuleiro, String? posicaoEscolhida)
+        public static void ImprimirTabuleiro(Tabuleiro tabuleiro)
         {
             Int32 i, j;
             Boolean impresso;
             List<Peca> pecasEmJogo;
-            PosicaoMatriz? posicaoMatriz, posicaoEscolhidaMatriz;
-            PosicaoXadrez? posicaoEscolhidaXadrez;
+            PosicaoMatriz? posicaoMatriz;
             ConsoleColor corFundoOriginal = Console.BackgroundColor;
             ConsoleColor corLetraOriginal = Console.ForegroundColor;
             Boolean[,] movimentosPossiveis;
-            Peca? pecaEscolhida;
 
             pecasEmJogo = tabuleiro.PecasEmJogo;
-            posicaoEscolhidaXadrez = PosicaoXadrez.StringParaPosicaoXadrez(posicaoEscolhida);
-            posicaoEscolhidaMatriz = posicaoEscolhidaXadrez?.ToPosicaoMatriz();
-            pecaEscolhida = tabuleiro.RetornarAPecaEmJogo(posicaoEscolhidaXadrez);
-            if (pecaEscolhida != null)
-                movimentosPossiveis = pecaEscolhida.MovimentosPossiveis();
-            else
-                movimentosPossiveis = new Boolean[tabuleiro.Linhas, tabuleiro.Colunas];
+            movimentosPossiveis = new Boolean[tabuleiro.Linhas, tabuleiro.Colunas];
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("  a b c d e f g h \n");
@@ -41,14 +33,8 @@ namespace xadrez_3
 
                 for (j = 0; j < tabuleiro.Colunas; j++)
                 {
-                    if (posicaoEscolhidaMatriz != null)
-                    {
-                        if (pecaEscolhida != null)
-                        {
-                            if (movimentosPossiveis[i, j])
-                                Console.BackgroundColor = ConsoleColor.DarkGray;
-                        }
-                    }
+                    if (movimentosPossiveis[i, j])
+                        Console.BackgroundColor = ConsoleColor.DarkGray;
 
                     impresso = false;
                     foreach (Peca item in pecasEmJogo)

@@ -12,19 +12,19 @@ namespace xadrez_3
 
             tab = new(8, 8);
 
-            Tela.ImprimirTabuleiro(tab, null);
+            Tela.ImprimirTabuleiro(tab);
 
             Console.Write("Origem: ");
             origem = Console.ReadLine();
 
             Console.Clear();
-            Tela.ImprimirTabuleiro(tab, origem);
+            Tela.ImprimirTabuleiro(tab);
 
             Console.Write("Destino: ");
             destino = Console.ReadLine();
 
             Console.Clear();
-            Tela.ImprimirTabuleiro(tab, destino);
+            Tela.ImprimirTabuleiro(tab);
         }
     }
 }
