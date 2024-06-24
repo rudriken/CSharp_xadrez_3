@@ -8,18 +8,33 @@ namespace xadrez_3
         /* 
          * Responsável por, apenas, imprimir o tabuleiro com as peças em jogo.
          */
-        public static void ImprimirTabuleiro(Tabuleiro tabuleiro)
+        public static void ImprimirTabuleiro(Tabuleiro tabuleiro, String? origemString)
         {
             Int32 i, j;
             Boolean impresso;
             List<Peca> pecasEmJogo;
             PosicaoMatriz? posicaoMatriz;
+            PosicaoXadrez? origemXadrez;
             ConsoleColor corFundoOriginal = Console.BackgroundColor;
             ConsoleColor corLetraOriginal = Console.ForegroundColor;
             Boolean[,] movimentosPossiveis;
+            Peca? peca;
 
             pecasEmJogo = tabuleiro.PecasEmJogo;
-            movimentosPossiveis = new Boolean[tabuleiro.Linhas, tabuleiro.Colunas];
+
+            origemXadrez = PosicaoXadrez.ConverterEmPosicaoXadrez(origemString);
+
+            if (origemXadrez != null)
+            {
+                peca = tabuleiro.RetornarAPecaEmJogo(origemXadrez);
+
+                if (peca == null)
+                    throw new TabuleiroException("Posição sem peça!");
+
+                movimentosPossiveis = peca.MovimentosPossiveis();
+            }
+            else
+                movimentosPossiveis = new Boolean[tabuleiro.Linhas, tabuleiro.Colunas];
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("  a b c d e f g h \n");

@@ -8,38 +8,64 @@ namespace extra
         public Int32 Linha { get; private set; } = linha;
 
         /* 
-         * Verifica se a entrada pelo teclado corresponde a uma posição de xadrez "a1".
+         * Verifica se a string dada tem o formato de posição de xadrez.
          */
-        public static Boolean ValidarPosicaoXadrez(String? entrada)
+        public static Boolean VerificarFormatoPosicaoXadrez(String? posicaoXadrez)
         {
-            Int32 tamanho;
-            Char caractere1, caractere2;
+            Boolean valido;
 
-            if (entrada != null)
+            if (posicaoXadrez != null)
             {
-                tamanho = entrada.Length;
-
-                if (tamanho == 2)
+                if (posicaoXadrez.Length == 2)
                 {
-                    caractere1 = entrada[0];
+                    posicaoXadrez = posicaoXadrez.ToLower();
 
-                    if (Char.TryParse(caractere1 + "", out _))
+                    valido = false;
+
+                    switch (posicaoXadrez[0])
                     {
-                        caractere2 = entrada[1];
-
-                        if (Int32.TryParse(caractere2 + "", out _))
-                            return true;
-                        else
-                            return false;
+                        case 'a': valido = true; break;
+                        case 'b': valido = true; break;
+                        case 'c': valido = true; break;
+                        case 'd': valido = true; break;
+                        case 'e': valido = true; break;
+                        case 'f': valido = true; break;
+                        case 'g': valido = true; break;
+                        case 'h': valido = true; break;
                     }
-                    else
-                        return false;
+
+                    switch (posicaoXadrez[1])
+                    {
+                        case '1': valido = true; break;
+                        case '2': valido = true; break;
+                        case '3': valido = true; break;
+                        case '4': valido = true; break;
+                        case '5': valido = true; break;
+                        case '6': valido = true; break;
+                        case '7': valido = true; break;
+                        case '8': valido = true; break;
+                    }
+
+                    if (valido)
+                        return true;
                 }
-                else
-                    return false;
             }
 
             return false;
+        }
+
+        /* 
+         * Converte a string dada para o formato de posição de xadrez.
+         */
+        public static PosicaoXadrez? ConverterEmPosicaoXadrez(String? entrada)
+        {
+            PosicaoXadrez? pos = null;
+
+            if (entrada != null)
+                if (VerificarFormatoPosicaoXadrez(entrada))                
+                    pos = new(entrada[0], Int32.Parse(entrada[1] + ""));
+
+            return pos;
         }
 
         /* 
@@ -50,7 +76,7 @@ namespace extra
             Char coluna;
             Int32 linha;
 
-            if (ValidarPosicaoXadrez(entrada))
+            if (VerificarFormatoPosicaoXadrez(entrada))
             {
                 if (entrada != null)
                 {

@@ -69,7 +69,7 @@ namespace tabuleiro
                 return true;
 
             return false;
-        }
+        }        
 
         /* 
          * Coloca uma peça na tabuleiro se a posição dada for válida e estiver vaga.
@@ -152,9 +152,6 @@ namespace tabuleiro
             ColocarPeca(new Peao(Cor.Preto), 'F', 7);
             ColocarPeca(new Peao(Cor.Preto), 'G', 7);
             ColocarPeca(new Peao(Cor.Preto), 'H', 7);
-
-
-
         }
     }
 }
