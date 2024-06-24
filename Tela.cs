@@ -6,7 +6,7 @@ namespace xadrez_3
     class Tela
     {
         /* 
-         * Responsável por imprimir o tabuleiro com as peças em jogo.
+         * Responsável por, apenas, imprimir o tabuleiro com as peças em jogo.
          */
         public static void ImprimirTabuleiro(Tabuleiro tabuleiro)
         {
