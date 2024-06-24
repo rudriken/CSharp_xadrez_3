@@ -1,4 +1,5 @@
 ﻿using extra;
+using jogo;
 using tabuleiro;
 
 namespace xadrez_3
@@ -8,7 +9,7 @@ namespace xadrez_3
         /* 
          * Responsável por, apenas, imprimir o tabuleiro com as peças em jogo.
          */
-        public static void ImprimirTabuleiro(Tabuleiro tabuleiro, String? origemString)
+        public static void ImprimirTabuleiro(PartidaDeXadrez partida, String? origemString)
         {
             Int32 i, j;
             Boolean impresso;
@@ -19,34 +20,47 @@ namespace xadrez_3
             ConsoleColor corLetraOriginal = Console.ForegroundColor;
             Boolean[,] movimentosPossiveis;
             Peca? peca;
+            Boolean movimentoPossivel = false;
 
-            pecasEmJogo = tabuleiro.PecasEmJogo;
+            pecasEmJogo = partida.PecasEmJogo;
 
             origemXadrez = PosicaoXadrez.ConverterEmPosicaoXadrez(origemString);
 
             if (origemXadrez != null)
             {
-                peca = tabuleiro.RetornarAPecaNoTabuleiro(origemXadrez);
+                peca = partida.Tabuleiro.RetornarAPecaEmJogo(origemXadrez);
 
-                if (peca == null)
-                    throw new TabuleiroException("Posição sem peça!");
+                if (peca == null)                
+                    throw new TabuleiroException("Posição sem peça!");                
+
+                if (peca.Cor != partida.JogadorAtual)
+                    throw new TabuleiroException("Peça não correspondente ao jogador atual! ");
 
                 movimentosPossiveis = peca.MovimentosPossiveis();
+
+                foreach (Boolean possivel in movimentosPossiveis)
+                    if (possivel)
+                        movimentoPossivel = true;
+
+                if (!movimentoPossivel)
+                    throw new TabuleiroException("Nenhum movimento possível! ");
             }
             else
-                movimentosPossiveis = new Boolean[tabuleiro.Linhas, tabuleiro.Colunas];
+                movimentosPossiveis = new Boolean[
+                    partida.Tabuleiro.Linhas, partida.Tabuleiro.Colunas
+                ];
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("  a b c d e f g h \n");
             Console.ForegroundColor = corLetraOriginal;
 
-            for (i = 0; i < tabuleiro.Linhas; i++)
+            for (i = 0; i < partida.Tabuleiro.Linhas; i++)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write((8 - i) + " ");
                 Console.ForegroundColor = corLetraOriginal;
 
-                for (j = 0; j < tabuleiro.Colunas; j++)
+                for (j = 0; j < partida.Tabuleiro.Colunas; j++)
                 {
                     if (movimentosPossiveis[i, j])
                         Console.BackgroundColor = ConsoleColor.DarkGray;
@@ -87,6 +101,19 @@ namespace xadrez_3
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("  a b c d e f g h \n");
             Console.ForegroundColor = corLetraOriginal;
+
+            Console.WriteLine("\nTurno: " + partida.Turno);
+            Console.WriteLine("Jogador atual: " + partida.JogadorAtual + "\n");
+            Console.WriteLine("Peças capturadas: ");
+            Console.Write("Brancas: [");
+            foreach (Peca item in partida.CapturadasBrancas())            
+                Console.Write(item + " ");
+            Console.WriteLine("]");
+
+            Console.Write("Pretas: [");
+            foreach (Peca item in partida.CapturadasPretas())
+                Console.Write(item + " ");
+            Console.WriteLine("]\n");
         }
     }
 }

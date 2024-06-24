@@ -13,21 +13,36 @@ namespace xadrez_3
 
             partida = new();
 
-            Tela.ImprimirTabuleiro(partida.Tabuleiro, null);
+            while (!partida.Terminada)
+            {
+                try
+                {
+                    Console.Clear();
+                    Tela.ImprimirTabuleiro(partida, null);
 
-            Console.Write("Origem: ");
-            origem = Console.ReadLine();
+                    Console.Write("Origem: ");
+                    origem = Console.ReadLine();
 
-            Console.Clear();
-            Tela.ImprimirTabuleiro(partida.Tabuleiro, origem);
+                    Tela.ImprimirTabuleiro(partida, origem);
+                    Console.Clear();
+                    Tela.ImprimirTabuleiro(partida, origem);
 
-            Console.Write("Destino: ");
-            destino = Console.ReadLine();
+                    Console.Write("Destino: ");
+                    destino = Console.ReadLine();
 
+                    partida.MoverPeca(
+                        PosicaoXadrez.ConverterEmPosicaoXadrez(origem),
+                        PosicaoXadrez.ConverterEmPosicaoXadrez(destino)
+                    );
 
-
-            Console.Clear();
-            Tela.ImprimirTabuleiro(partida.Tabuleiro, null);
+                    Tela.ImprimirTabuleiro(partida, null);
+                }
+                catch (TabuleiroException erro)
+                {
+                    Console.WriteLine(erro.Message);
+                    Console.ReadLine();
+                }
+            }
         }
     }
 }

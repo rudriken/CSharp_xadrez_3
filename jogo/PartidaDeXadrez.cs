@@ -15,57 +15,106 @@ namespace jogo
         public PartidaDeXadrez()
         {
             Tabuleiro = new(8, 8);
-            Turno = 0;
+            Turno = 1;
             JogadorAtual = Cor.Branco;
             Terminada = false;
 
             PecasEmJogo = [];
-            foreach (Peca item in Tabuleiro.PecasEmJogo)            
+            foreach (Peca item in Tabuleiro.PecasNoTabuleiro)
                 PecasEmJogo.Add(item);
-            
+
             PecasCapturadas = [];
         }
 
-        /* 
-         * Retorna a peça que estiver na posição dada durante a partida.
-         */
-        public Peca? RetornarAPecaEmJogo(PosicaoXadrez? pos)
+        private void AlternarJogadorAtual()
         {
-            foreach (Peca peca in PecasEmJogo)
-                if (peca.PosicaoXadrez != null)
-                    if (
-                        peca.PosicaoXadrez.Linha == pos?.Linha &&
-                        peca.PosicaoXadrez.Coluna == pos?.Coluna
-                    )
-                        return peca;
+            if (JogadorAtual == Cor.Branco)
+                JogadorAtual = Cor.Preto;
+            else
+                JogadorAtual = Cor.Branco;
+        }
 
-            return null;
+        public List<Peca> CapturadasBrancas()
+        {
+            List<Peca> pecas = [];
+
+            foreach (Peca item in PecasCapturadas)
+                if (item.Cor == Cor.Branco)
+                    pecas.Add(item);
+
+            return pecas;
+        }
+
+        public List<Peca> CapturadasPretas()
+        {
+            List<Peca> pecas = [];
+
+            foreach (Peca item in PecasCapturadas)
+                if (item.Cor == Cor.Preto)
+                    pecas.Add(item);
+
+            return pecas;
         }
 
         /* 
-         * Verifica se há uma peça inimiga na posição dada durante a partida.
+         * Verifica se tem peça na origem, se essa peça é da cor do jogador atual, 
+         * e se pode mover essa peça para o destino.
          */
-        public Boolean TemInimigo(Peca peca, PosicaoXadrez pos)
+        private Boolean PodeMoverPeca(PosicaoXadrez? origem, PosicaoXadrez? destino)
         {
-            Peca? p = RetornarAPecaEmJogo(pos);
+            Boolean[,] movimentosPossiveis;
+            Peca? peca;
 
-            if (p != null)
-                if (p.Cor != peca.Cor)
-                    return true;
+            peca = Tabuleiro.RetornarAPecaEmJogo(origem);
+
+            if (peca != null && destino != null && peca.Cor == JogadorAtual)
+            {
+                movimentosPossiveis = peca.MovimentosPossiveis();
+
+                foreach (Boolean casa in movimentosPossiveis)
+                    if (casa)
+                        return true;
+            }
 
             return false;
         }
 
         /* 
-         * Verifica se a posição dada está vaga durante a partida.
+         * Mecânica da movimentação de uma peça:
+         *  1-> retirar de sua origem;
+         *  2-> capturar a peça que está no destino, se houver:
+         *      2.1-> retirá-la das peças em jogo;
+         *      2.2-> colocá-la nas peças capturadas.
+         *  3-> colocar no seu destino;
+         *  4-> atualizar a sua posição;
+         *  5-> incrementar o seu movimento;
+         *  6-> incrementar o turno;
+         *  7-> alternar o jogador atual.
          */
-        public Boolean EstaVaga(PosicaoXadrez pos)
+        public void MoverPeca(PosicaoXadrez? origem, PosicaoXadrez? destino)
         {
-            Peca? p = RetornarAPecaEmJogo(pos);
+            Boolean podeMover = PodeMoverPeca(origem, destino);
+            Peca? peca, pecaCapturada;
 
-            return p == null;
+            peca = Tabuleiro.RetornarAPecaEmJogo(origem);
+
+            if (podeMover && destino != null && peca != null && peca.PosicaoXadrez != null)
+            {
+                Tabuleiro.RetirarPeca(origem);
+                pecaCapturada = Tabuleiro.RetirarPeca(destino);
+
+                if (pecaCapturada != null)
+                {
+                    PecasEmJogo.Remove(pecaCapturada);
+                    PecasCapturadas.Add(pecaCapturada);
+                }
+
+                Tabuleiro.ColocarPeca(peca, destino.Coluna, destino.Linha);
+                peca.SetPosicaoXadrez(Tabuleiro, destino);
+                peca.IncrementarMovimento(Tabuleiro);
+                Turno++;
+                AlternarJogadorAtual();
+            }
         }
-
-        
     }
 }

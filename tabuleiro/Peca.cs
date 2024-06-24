@@ -10,7 +10,7 @@ namespace tabuleiro
         public Tabuleiro? Tabuleiro { get; protected set; } = null;
         public Int32 Movimentos { get; protected set; } = 0;
 
-        public void SetPosicaoXadrez(Object objeto, PosicaoXadrez pos)
+        public void SetPosicaoXadrez(Object objeto, PosicaoXadrez? pos)
         {
             if (objeto is Tabuleiro)
                 PosicaoXadrez = pos;
@@ -40,14 +40,20 @@ namespace tabuleiro
                 );
         }
 
-        public void IncrementarMovimento()
+        public void IncrementarMovimento(Object objeto)
         {
-            Movimentos++;
+            if (objeto is Tabuleiro)
+                Movimentos++;
+            else
+                throw new TabuleiroException("Não foi permitido o incremento de movimento!");
         }
 
-        public void DecrementarMovimento()
+        public void DecrementarMovimento(Object objeto)
         {
-            Movimentos--;
+            if (objeto is Tabuleiro)
+                Movimentos--;
+            else
+                throw new TabuleiroException("Não foi permitido o decremento de movimento!");
         }
 
         public abstract Boolean[,] MovimentosPossiveis();

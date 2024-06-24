@@ -7,22 +7,22 @@ namespace tabuleiro
     {
         public Int32 Linhas { get; protected set; }
         public Int32 Colunas { get; protected set; }
-        public List<Peca> PecasEmJogo { get; protected set; }
+        public List<Peca> PecasNoTabuleiro { get; protected set; }
 
         public Tabuleiro(Int32 linhas, Int32 colunas)
         {
             Linhas = linhas;
             Colunas = colunas;
-            PecasEmJogo = [];
+            PecasNoTabuleiro = [];
             ColocarPecas();
         }
 
         /* 
          * Retorna a peça que estiver na posição dada no tabuleiro.
          */
-        public Peca? RetornarAPecaNoTabuleiro(PosicaoXadrez? pos)
+        public Peca? RetornarAPecaEmJogo(PosicaoXadrez? pos)
         {
-            foreach (Peca peca in PecasEmJogo)
+            foreach (Peca peca in PecasNoTabuleiro)
                 if (peca.PosicaoXadrez != null)
                     if (
                         peca.PosicaoXadrez.Linha == pos?.Linha &&
@@ -36,9 +36,9 @@ namespace tabuleiro
         /* 
          * Verifica se há uma peça inimiga na posição dada no tabuleiro.
          */
-        public Boolean TemInimigoNoTabuleiro(Peca peca, PosicaoXadrez pos)
+        public Boolean TemInimigo(Peca peca, PosicaoXadrez pos)
         {
-            Peca? p = RetornarAPecaNoTabuleiro(pos);
+            Peca? p = RetornarAPecaEmJogo(pos);
 
             if (p != null)
                 if (p.Cor != peca.Cor)
@@ -50,9 +50,9 @@ namespace tabuleiro
         /* 
          * Verifica se a posição dada está vaga no tabuleiro.
          */
-        public Boolean EstaVagaNoTabuleiro(PosicaoXadrez pos)
+        public Boolean EstaVaga(PosicaoXadrez pos)
         {
-            Peca? p = RetornarAPecaNoTabuleiro(pos);
+            Peca? p = RetornarAPecaEmJogo(pos);
 
             return p == null;
         }
@@ -71,6 +71,22 @@ namespace tabuleiro
                 return true;
 
             return false;
+        }
+
+        /* 
+         * Retira a peça do tabuleiro, anula a sua posição, e a retorna.
+         */
+        public Peca? RetirarPeca(PosicaoXadrez? pos)
+        {
+            Peca? peca = RetornarAPecaEmJogo(pos);
+
+            if (peca != null)
+            {
+                PecasNoTabuleiro.Remove(peca);
+                peca.SetPosicaoXadrez(this, null);
+            }
+
+            return peca;
         }
 
         /* 
@@ -96,14 +112,14 @@ namespace tabuleiro
             posicaoXadrez = new(coluna, linha);
 
             posicaoValida = PosicaoValida(posicaoXadrez);
-            estaVaga = EstaVagaNoTabuleiro(posicaoXadrez);
+            estaVaga = EstaVaga(posicaoXadrez);
 
             if (posicaoValida && estaVaga)
             {
                 peca.SetPosicaoXadrez(this, posicaoXadrez);
                 peca.SetEmJogo(this, true);
                 peca.SetTabuleiro(this, this);
-                PecasEmJogo.Add(peca);
+                PecasNoTabuleiro.Add(peca);
             }
             else
             {

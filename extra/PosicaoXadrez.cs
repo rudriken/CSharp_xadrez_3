@@ -62,8 +62,11 @@ namespace extra
             PosicaoXadrez? pos = null;
 
             if (entrada != null)
-                if (VerificarFormatoPosicaoXadrez(entrada))                
+                if (VerificarFormatoPosicaoXadrez(entrada))
+                {
+                    entrada = entrada.ToLower();
                     pos = new(entrada[0], Int32.Parse(entrada[1] + ""));
+                }
 
             return pos;
         }
