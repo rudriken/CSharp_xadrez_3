@@ -33,8 +33,8 @@ namespace tabuleiro
                 posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
                 posicaoMatriz.Linha -= 2;
                 posicaoMatriz.Coluna++;
-                temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
-                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                temInimigo = Tabuleiro.TemInimigoNoTabuleiro(this, posicaoMatriz.ToPosicaoXadrez());
+                estaVaga = Tabuleiro.EstaVagaNoTabuleiro(posicaoMatriz.ToPosicaoXadrez());
                 posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 if (posicaoValida && (estaVaga || temInimigo))                
                     matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
@@ -45,8 +45,8 @@ namespace tabuleiro
                 posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
                 posicaoMatriz.Linha += 1;
                 posicaoMatriz.Coluna += 2;
-                temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
-                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                temInimigo = Tabuleiro.TemInimigoNoTabuleiro(this, posicaoMatriz.ToPosicaoXadrez());
+                estaVaga = Tabuleiro.EstaVagaNoTabuleiro(posicaoMatriz.ToPosicaoXadrez());
                 posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 if (posicaoValida && (estaVaga || temInimigo))
                     matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
@@ -58,8 +58,8 @@ namespace tabuleiro
                 posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
                 posicaoMatriz.Linha += 2;
                 posicaoMatriz.Coluna -= 1;
-                temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
-                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                temInimigo = Tabuleiro.TemInimigoNoTabuleiro(this, posicaoMatriz.ToPosicaoXadrez());
+                estaVaga = Tabuleiro.EstaVagaNoTabuleiro(posicaoMatriz.ToPosicaoXadrez());
                 posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 if (posicaoValida && (estaVaga || temInimigo))
                     matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
@@ -70,8 +70,8 @@ namespace tabuleiro
                 posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
                 posicaoMatriz.Linha -= 1;
                 posicaoMatriz.Coluna -= 2;
-                temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
-                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                temInimigo = Tabuleiro.TemInimigoNoTabuleiro(this, posicaoMatriz.ToPosicaoXadrez());
+                estaVaga = Tabuleiro.EstaVagaNoTabuleiro(posicaoMatriz.ToPosicaoXadrez());
                 posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 if (posicaoValida && (estaVaga || temInimigo))
                     matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
@@ -83,8 +83,8 @@ namespace tabuleiro
                 posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
                 posicaoMatriz.Linha -= 2;
                 posicaoMatriz.Coluna -= 1;
-                temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
-                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                temInimigo = Tabuleiro.TemInimigoNoTabuleiro(this, posicaoMatriz.ToPosicaoXadrez());
+                estaVaga = Tabuleiro.EstaVagaNoTabuleiro(posicaoMatriz.ToPosicaoXadrez());
                 posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 if (posicaoValida && (estaVaga || temInimigo))
                     matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
@@ -95,8 +95,8 @@ namespace tabuleiro
                 posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
                 posicaoMatriz.Linha -= 1;
                 posicaoMatriz.Coluna += 2;
-                temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
-                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                temInimigo = Tabuleiro.TemInimigoNoTabuleiro(this, posicaoMatriz.ToPosicaoXadrez());
+                estaVaga = Tabuleiro.EstaVagaNoTabuleiro(posicaoMatriz.ToPosicaoXadrez());
                 posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 if (posicaoValida && (estaVaga || temInimigo))
                     matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
@@ -108,8 +108,8 @@ namespace tabuleiro
                 posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
                 posicaoMatriz.Linha += 2;
                 posicaoMatriz.Coluna += 1;
-                temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
-                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                temInimigo = Tabuleiro.TemInimigoNoTabuleiro(this, posicaoMatriz.ToPosicaoXadrez());
+                estaVaga = Tabuleiro.EstaVagaNoTabuleiro(posicaoMatriz.ToPosicaoXadrez());
                 posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 if (posicaoValida && (estaVaga || temInimigo))
                     matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
@@ -120,8 +120,8 @@ namespace tabuleiro
                 posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
                 posicaoMatriz.Linha += 1;
                 posicaoMatriz.Coluna -= 2;
-                temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
-                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                temInimigo = Tabuleiro.TemInimigoNoTabuleiro(this, posicaoMatriz.ToPosicaoXadrez());
+                estaVaga = Tabuleiro.EstaVagaNoTabuleiro(posicaoMatriz.ToPosicaoXadrez());
                 posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 if (posicaoValida && (estaVaga || temInimigo))
                     matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;

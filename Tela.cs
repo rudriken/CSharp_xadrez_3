@@ -26,7 +26,7 @@ namespace xadrez_3
 
             if (origemXadrez != null)
             {
-                peca = tabuleiro.RetornarAPecaEmJogo(origemXadrez);
+                peca = tabuleiro.RetornarAPecaNoTabuleiro(origemXadrez);
 
                 if (peca == null)
                     throw new TabuleiroException("Posição sem peça!");

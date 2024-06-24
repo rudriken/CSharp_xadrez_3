@@ -1,4 +1,5 @@
 ﻿using extra;
+using jogo;
 using tabuleiro;
 
 namespace xadrez_3
@@ -7,24 +8,26 @@ namespace xadrez_3
     {
         static void Main()
         {
-            Tabuleiro tab;
+            PartidaDeXadrez partida;
             String? origem, destino;
 
-            tab = new(8, 8);
+            partida = new();
 
-            Tela.ImprimirTabuleiro(tab, null);
+            Tela.ImprimirTabuleiro(partida.Tabuleiro, null);
 
             Console.Write("Origem: ");
             origem = Console.ReadLine();
 
             Console.Clear();
-            Tela.ImprimirTabuleiro(tab, origem);
+            Tela.ImprimirTabuleiro(partida.Tabuleiro, origem);
 
             Console.Write("Destino: ");
             destino = Console.ReadLine();
 
+
+
             Console.Clear();
-            Tela.ImprimirTabuleiro(tab, null);
+            Tela.ImprimirTabuleiro(partida.Tabuleiro, null);
         }
     }
 }

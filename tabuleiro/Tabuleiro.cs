@@ -1,4 +1,5 @@
 ﻿using extra;
+using jogo;
 
 namespace tabuleiro
 {
@@ -7,18 +8,19 @@ namespace tabuleiro
         public Int32 Linhas { get; protected set; }
         public Int32 Colunas { get; protected set; }
         public List<Peca> PecasEmJogo { get; protected set; }
-        public List<Peca> PecasCapturadas { get; protected set; }
 
         public Tabuleiro(Int32 linhas, Int32 colunas)
         {
             Linhas = linhas;
             Colunas = colunas;
             PecasEmJogo = [];
-            PecasCapturadas = [];
             ColocarPecas();
         }
 
-        public Peca? RetornarAPecaEmJogo(PosicaoXadrez? pos)
+        /* 
+         * Retorna a peça que estiver na posição dada no tabuleiro.
+         */
+        public Peca? RetornarAPecaNoTabuleiro(PosicaoXadrez? pos)
         {
             foreach (Peca peca in PecasEmJogo)
                 if (peca.PosicaoXadrez != null)
@@ -32,11 +34,11 @@ namespace tabuleiro
         }
 
         /* 
-         * Verifica se há uma peça inimiga na posição dada do tabuleiro.
+         * Verifica se há uma peça inimiga na posição dada no tabuleiro.
          */
-        public Boolean TemInimigo(Peca peca, PosicaoXadrez pos)
+        public Boolean TemInimigoNoTabuleiro(Peca peca, PosicaoXadrez pos)
         {
-            Peca? p = RetornarAPecaEmJogo(pos);
+            Peca? p = RetornarAPecaNoTabuleiro(pos);
 
             if (p != null)
                 if (p.Cor != peca.Cor)
@@ -48,9 +50,9 @@ namespace tabuleiro
         /* 
          * Verifica se a posição dada está vaga no tabuleiro.
          */
-        public Boolean EstaVaga(PosicaoXadrez pos)
+        public Boolean EstaVagaNoTabuleiro(PosicaoXadrez pos)
         {
-            Peca? p = RetornarAPecaEmJogo(pos);
+            Peca? p = RetornarAPecaNoTabuleiro(pos);
 
             return p == null;
         }
@@ -69,7 +71,7 @@ namespace tabuleiro
                 return true;
 
             return false;
-        }        
+        }
 
         /* 
          * Coloca uma peça na tabuleiro se a posição dada for válida e estiver vaga.
@@ -94,7 +96,7 @@ namespace tabuleiro
             posicaoXadrez = new(coluna, linha);
 
             posicaoValida = PosicaoValida(posicaoXadrez);
-            estaVaga = EstaVaga(posicaoXadrez);
+            estaVaga = EstaVagaNoTabuleiro(posicaoXadrez);
 
             if (posicaoValida && estaVaga)
             {

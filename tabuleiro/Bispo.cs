@@ -31,8 +31,8 @@ namespace tabuleiro
                 posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
                 posicaoMatriz.Linha--;
                 posicaoMatriz.Coluna++;
-                temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
-                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                temInimigo = Tabuleiro.TemInimigoNoTabuleiro(this, posicaoMatriz.ToPosicaoXadrez());
+                estaVaga = Tabuleiro.EstaVagaNoTabuleiro(posicaoMatriz.ToPosicaoXadrez());
                 posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 inimigoContado = false;
                 while (true)
@@ -54,8 +54,8 @@ namespace tabuleiro
 
                     posicaoMatriz.Linha--;
                     posicaoMatriz.Coluna++;
-                    temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
-                    estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                    temInimigo = Tabuleiro.TemInimigoNoTabuleiro(this, posicaoMatriz.ToPosicaoXadrez());
+                    estaVaga = Tabuleiro.EstaVagaNoTabuleiro(posicaoMatriz.ToPosicaoXadrez());
                     posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 }
 
@@ -64,8 +64,8 @@ namespace tabuleiro
                 posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
                 posicaoMatriz.Linha++;
                 posicaoMatriz.Coluna++;
-                temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
-                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                temInimigo = Tabuleiro.TemInimigoNoTabuleiro(this, posicaoMatriz.ToPosicaoXadrez());
+                estaVaga = Tabuleiro.EstaVagaNoTabuleiro(posicaoMatriz.ToPosicaoXadrez());
                 posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 inimigoContado = false;
                 while (true)
@@ -87,8 +87,8 @@ namespace tabuleiro
 
                     posicaoMatriz.Linha++;
                     posicaoMatriz.Coluna++;
-                    temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
-                    estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                    temInimigo = Tabuleiro.TemInimigoNoTabuleiro(this, posicaoMatriz.ToPosicaoXadrez());
+                    estaVaga = Tabuleiro.EstaVagaNoTabuleiro(posicaoMatriz.ToPosicaoXadrez());
                     posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 }
 
@@ -97,8 +97,8 @@ namespace tabuleiro
                 posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
                 posicaoMatriz.Linha++;
                 posicaoMatriz.Coluna--;
-                temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
-                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                temInimigo = Tabuleiro.TemInimigoNoTabuleiro(this, posicaoMatriz.ToPosicaoXadrez());
+                estaVaga = Tabuleiro.EstaVagaNoTabuleiro(posicaoMatriz.ToPosicaoXadrez());
                 posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 inimigoContado = false;
                 while (true)
@@ -120,8 +120,8 @@ namespace tabuleiro
 
                     posicaoMatriz.Linha++;
                     posicaoMatriz.Coluna--;
-                    temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
-                    estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                    temInimigo = Tabuleiro.TemInimigoNoTabuleiro(this, posicaoMatriz.ToPosicaoXadrez());
+                    estaVaga = Tabuleiro.EstaVagaNoTabuleiro(posicaoMatriz.ToPosicaoXadrez());
                     posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 }
 
@@ -130,8 +130,8 @@ namespace tabuleiro
                 posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
                 posicaoMatriz.Linha--;
                 posicaoMatriz.Coluna--;
-                temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
-                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                temInimigo = Tabuleiro.TemInimigoNoTabuleiro(this, posicaoMatriz.ToPosicaoXadrez());
+                estaVaga = Tabuleiro.EstaVagaNoTabuleiro(posicaoMatriz.ToPosicaoXadrez());
                 posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 inimigoContado = false;
                 while (true)
@@ -153,8 +153,8 @@ namespace tabuleiro
 
                     posicaoMatriz.Linha--;
                     posicaoMatriz.Coluna--;
-                    temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
-                    estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                    temInimigo = Tabuleiro.TemInimigoNoTabuleiro(this, posicaoMatriz.ToPosicaoXadrez());
+                    estaVaga = Tabuleiro.EstaVagaNoTabuleiro(posicaoMatriz.ToPosicaoXadrez());
                     posicaoValida = Tabuleiro.PosicaoValida(posicaoMatriz.ToPosicaoXadrez());
                 }
             }
