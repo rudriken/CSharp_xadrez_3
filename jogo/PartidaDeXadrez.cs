@@ -125,5 +125,45 @@ namespace jogo
                     throw new TabuleiroException("Posição de destino não permitida! ");
             }
         }
+
+        /* 
+         * Mecânica da reversão de movimento de uma peça:
+         *  1-> retirar de seu destino;
+         *  2-> devolver a peça capturada no destino, se houve:
+         *      2.1-> atualizar a sua posição (destino);
+         *      2.2-> retirá-la das peças capturadas;
+         *      2.3-> colocá-la nas peças em jogo.
+         *  3-> colocar na sua origem;
+         *  4-> atualizar a sua posição;
+         *  5-> decrementar o seu movimento;
+         *  6-> decrementar o turno;
+         *  7-> voltar ao jogador original.
+         */
+        private void DesfazerMovimento(
+            PosicaoXadrez? origem, PosicaoXadrez? destino, Peca? pecaCapturada
+        )
+        {
+            Peca? peca;
+
+            peca = Tabuleiro.RetornarAPecaEmJogo(destino);
+
+            if (origem != null && peca != null && peca.PosicaoXadrez != null)
+            {
+                Tabuleiro.RetirarPeca(destino);
+
+                if (pecaCapturada != null)
+                {
+                    pecaCapturada.SetPosicaoXadrez(Tabuleiro, destino);
+                    PecasCapturadas.Remove(pecaCapturada);
+                    PecasEmJogo.Add(pecaCapturada);
+                }
+
+                Tabuleiro.ColocarPeca(peca, origem.Coluna, origem.Linha);
+                peca.SetPosicaoXadrez(Tabuleiro, origem);
+                peca.DecrementarMovimento(Tabuleiro);
+                Turno--;
+                AlternarJogadorAtual();
+            }
+        }
     }
 }

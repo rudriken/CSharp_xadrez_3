@@ -12,7 +12,7 @@ namespace extra
          */
         public static Boolean VerificarFormatoPosicaoXadrez(String? posicaoXadrez)
         {
-            Boolean valido;
+            Boolean colunaValida, linhaValida;
 
             if (posicaoXadrez != null)
             {
@@ -20,33 +20,35 @@ namespace extra
                 {
                     posicaoXadrez = posicaoXadrez.ToLower();
 
-                    valido = false;
-
                     switch (posicaoXadrez[0])
                     {
-                        case 'a': valido = true; break;
-                        case 'b': valido = true; break;
-                        case 'c': valido = true; break;
-                        case 'd': valido = true; break;
-                        case 'e': valido = true; break;
-                        case 'f': valido = true; break;
-                        case 'g': valido = true; break;
-                        case 'h': valido = true; break;
+                        case 'a': colunaValida = true; break;
+                        case 'b': colunaValida = true; break;
+                        case 'c': colunaValida = true; break;
+                        case 'd': colunaValida = true; break;
+                        case 'e': colunaValida = true; break;
+                        case 'f': colunaValida = true; break;
+                        case 'g': colunaValida = true; break;
+                        case 'h': colunaValida = true; break;
+
+                        default: colunaValida = false; break;
                     }
 
                     switch (posicaoXadrez[1])
                     {
-                        case '1': valido = true; break;
-                        case '2': valido = true; break;
-                        case '3': valido = true; break;
-                        case '4': valido = true; break;
-                        case '5': valido = true; break;
-                        case '6': valido = true; break;
-                        case '7': valido = true; break;
-                        case '8': valido = true; break;
+                        case '1': linhaValida = true; break;
+                        case '2': linhaValida = true; break;
+                        case '3': linhaValida = true; break;
+                        case '4': linhaValida = true; break;
+                        case '5': linhaValida = true; break;
+                        case '6': linhaValida = true; break;
+                        case '7': linhaValida = true; break;
+                        case '8': linhaValida = true; break;
+
+                        default: linhaValida = false; break;
                     }
 
-                    if (valido)
+                    if (colunaValida && linhaValida)
                         return true;
                 }
             }
@@ -60,13 +62,20 @@ namespace extra
         public static PosicaoXadrez? ConverterEmPosicaoXadrez(String? entrada)
         {
             PosicaoXadrez? pos = null;
+            Boolean posicaoValida;
 
             if (entrada != null)
-                if (VerificarFormatoPosicaoXadrez(entrada))
+            {
+                posicaoValida = VerificarFormatoPosicaoXadrez(entrada);
+
+                if (posicaoValida)
                 {
                     entrada = entrada.ToLower();
                     pos = new(entrada[0], Int32.Parse(entrada[1] + ""));
                 }
+                else
+                    throw new TabuleiroException("Posição inválida! ");
+            }
 
             return pos;
         }
