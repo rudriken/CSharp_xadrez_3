@@ -117,7 +117,6 @@ namespace tabuleiro
             if (posicaoValida && estaVaga)
             {
                 peca.SetPosicaoXadrez(this, posicaoXadrez);
-                peca.SetEmJogo(this, true);
                 peca.SetTabuleiro(this, this);
                 PecasNoTabuleiro.Add(peca);
             }

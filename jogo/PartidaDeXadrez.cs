@@ -64,16 +64,17 @@ namespace jogo
         {
             Boolean[,] movimentosPossiveis;
             Peca? peca;
+            PosicaoMatriz destinoMatriz;
 
             peca = Tabuleiro.RetornarAPecaEmJogo(origem);
 
             if (peca != null && destino != null && peca.Cor == JogadorAtual)
             {
                 movimentosPossiveis = peca.MovimentosPossiveis();
+                destinoMatriz = destino.ToPosicaoMatriz();
 
-                foreach (Boolean casa in movimentosPossiveis)
-                    if (casa)
-                        return true;
+                if (movimentosPossiveis[destinoMatriz.Linha, destinoMatriz.Coluna])
+                    return true;
             }
 
             return false;
@@ -82,9 +83,10 @@ namespace jogo
         /* 
          * Mecânica da movimentação de uma peça:
          *  1-> retirar de sua origem;
-         *  2-> capturar a peça que está no destino, se houver:
-         *      2.1-> retirá-la das peças em jogo;
-         *      2.2-> colocá-la nas peças capturadas.
+         *  2-> capturar a peça que está no destino, se houver e se for inimiga:
+         *      2.1-> atualizar a sua posição (null);
+         *      2.2-> retirá-la das peças em jogo;
+         *      2.3-> colocá-la nas peças capturadas.
          *  3-> colocar no seu destino;
          *  4-> atualizar a sua posição;
          *  5-> incrementar o seu movimento;
@@ -93,27 +95,34 @@ namespace jogo
          */
         public void MoverPeca(PosicaoXadrez? origem, PosicaoXadrez? destino)
         {
-            Boolean podeMover = PodeMoverPeca(origem, destino);
+            Boolean podeMover;
             Peca? peca, pecaCapturada;
 
             peca = Tabuleiro.RetornarAPecaEmJogo(origem);
+            podeMover = PodeMoverPeca(origem, destino);
 
-            if (podeMover && destino != null && peca != null && peca.PosicaoXadrez != null)
+            if (destino != null && peca != null && peca.PosicaoXadrez != null)
             {
-                Tabuleiro.RetirarPeca(origem);
-                pecaCapturada = Tabuleiro.RetirarPeca(destino);
-
-                if (pecaCapturada != null)
+                if (podeMover)
                 {
-                    PecasEmJogo.Remove(pecaCapturada);
-                    PecasCapturadas.Add(pecaCapturada);
-                }
+                    Tabuleiro.RetirarPeca(origem);
+                    pecaCapturada = Tabuleiro.RetirarPeca(destino);
 
-                Tabuleiro.ColocarPeca(peca, destino.Coluna, destino.Linha);
-                peca.SetPosicaoXadrez(Tabuleiro, destino);
-                peca.IncrementarMovimento(Tabuleiro);
-                Turno++;
-                AlternarJogadorAtual();
+                    if (pecaCapturada != null && pecaCapturada.Cor != peca.Cor)
+                    {
+                        pecaCapturada.SetPosicaoXadrez(Tabuleiro, null);
+                        PecasEmJogo.Remove(pecaCapturada);
+                        PecasCapturadas.Add(pecaCapturada);
+                    }
+
+                    Tabuleiro.ColocarPeca(peca, destino.Coluna, destino.Linha);
+                    peca.SetPosicaoXadrez(Tabuleiro, destino);
+                    peca.IncrementarMovimento(Tabuleiro);
+                    Turno++;
+                    AlternarJogadorAtual();
+                }
+                else
+                    throw new TabuleiroException("Posição de destino não permitida! ");
             }
         }
     }

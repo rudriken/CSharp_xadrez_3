@@ -6,7 +6,6 @@ namespace tabuleiro
     {
         public PosicaoXadrez? PosicaoXadrez { get; private set; } = null;
         public Cor Cor { get; protected set; } = cor;
-        public Boolean EmJogo { get; protected set; } = false;
         public Tabuleiro? Tabuleiro { get; protected set; } = null;
         public Int32 Movimentos { get; protected set; } = 0;
 
@@ -17,16 +16,6 @@ namespace tabuleiro
             else
                 throw new TabuleiroException(
                     "Sem permissão para alterar a posição da peça!"
-                );
-        }
-
-        public void SetEmJogo(Object objeto, Boolean emJogo)
-        {
-            if (objeto is Tabuleiro)
-                EmJogo = emJogo;
-            else
-                throw new TabuleiroException(
-                    "Sem permissão para alterar a situação da peça!"
                 );
         }
 

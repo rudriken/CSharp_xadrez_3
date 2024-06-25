@@ -105,15 +105,20 @@ namespace xadrez_3
             Console.WriteLine("\nTurno: " + partida.Turno);
             Console.WriteLine("Jogador atual: " + partida.JogadorAtual + "\n");
             Console.WriteLine("Peças capturadas: ");
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Brancas: [");
             foreach (Peca item in partida.CapturadasBrancas())            
                 Console.Write(item + " ");
             Console.WriteLine("]");
+            Console.ForegroundColor = corLetraOriginal;
 
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write("Pretas: [");
             foreach (Peca item in partida.CapturadasPretas())
                 Console.Write(item + " ");
             Console.WriteLine("]\n");
+            Console.ForegroundColor = corLetraOriginal;
         }
     }
 }
