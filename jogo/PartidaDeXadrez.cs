@@ -97,7 +97,7 @@ namespace jogo
         {
             Boolean podeMover;
             Peca? peca, pecaCapturada, torre;
-            PosicaoMatriz origemReiMatriz, destinoReiMatriz;
+            PosicaoMatriz origemMatriz, destinoMatriz, posicaoEnpassant;
 
             peca = Tabuleiro.RetornarAPecaEmJogo(origem);
             podeMover = PodeMoverPeca(origem, destino);
@@ -111,6 +111,9 @@ namespace jogo
             {
                 if (podeMover)
                 {
+                    origemMatriz = origem.ToPosicaoMatriz();
+                    destinoMatriz = destino.ToPosicaoMatriz();
+
                     Tabuleiro.RetirarPeca(origem);
                     pecaCapturada = Tabuleiro.RetirarPeca(destino);
 
@@ -121,16 +124,10 @@ namespace jogo
                         PecasCapturadas.Add(pecaCapturada);
                     }
 
-                    Tabuleiro.ColocarPeca(peca, destino.Coluna, destino.Linha);
-                    peca.SetPosicaoXadrez(Tabuleiro, destino);
-
                     if (peca is Rei)
                     {
-                        origemReiMatriz = origem.ToPosicaoMatriz();
-                        destinoReiMatriz = destino.ToPosicaoMatriz();
-
                         // #jogadaEspecial: Roque Pequeno
-                        if (destinoReiMatriz.Coluna == origemReiMatriz.Coluna + 2)
+                        if (destinoMatriz.Coluna == origemMatriz.Coluna + 2)
                         {
                             if (peca.Cor == Cor.Branco)
                             {
@@ -165,7 +162,7 @@ namespace jogo
                         }
 
                         // #jogadaEspecial: Roque Grande
-                        if (destinoReiMatriz.Coluna == origemReiMatriz.Coluna - 2)
+                        if (destinoMatriz.Coluna == origemMatriz.Coluna - 2)
                         {
                             if (peca.Cor == Cor.Branco)
                             {
@@ -200,6 +197,106 @@ namespace jogo
                         }
                     }
 
+                    if (peca is Peao)
+                    {
+                        // #jogadaEspecial: En-Passant
+                        // a coluna de destino é diferente da coluna de origem,
+                        // e não houve a captura normal esperada.
+                        if (
+                            destinoMatriz.Coluna != origemMatriz.Coluna &&
+                            pecaCapturada == null
+                        )
+                        {
+                            if (origemMatriz.Linha == 3)
+                            {
+                                // andou a "NORDESTE", capturar a "LESTE"
+                                if (destinoMatriz.Coluna == origemMatriz.Coluna + 1)
+                                {
+                                    posicaoEnpassant = new('a', 1)
+                                    {
+                                        Linha = origemMatriz.Linha,
+                                        Coluna = destinoMatriz.Coluna
+                                    };
+                                    pecaCapturada = Tabuleiro.RetirarPeca(
+                                        posicaoEnpassant.ToPosicaoXadrez()
+                                    );
+
+                                    if (pecaCapturada != null)
+                                    {
+                                        pecaCapturada.SetPosicaoXadrez(Tabuleiro, null);
+                                        PecasEmJogo.Remove(pecaCapturada);
+                                        PecasCapturadas.Add(pecaCapturada);
+                                    }
+                                }
+
+                                // andou a "NOROESTE", capturar a "OESTE"
+                                if (destinoMatriz.Coluna == origemMatriz.Coluna - 1)
+                                {
+                                    posicaoEnpassant = new('a', 1)
+                                    {
+                                        Linha = origemMatriz.Linha,
+                                        Coluna = destinoMatriz.Coluna
+                                    };
+                                    pecaCapturada = Tabuleiro.RetirarPeca(
+                                        posicaoEnpassant.ToPosicaoXadrez()
+                                    );
+
+                                    if (pecaCapturada != null)
+                                    {
+                                        pecaCapturada.SetPosicaoXadrez(Tabuleiro, null);
+                                        PecasEmJogo.Remove(pecaCapturada);
+                                        PecasCapturadas.Add(pecaCapturada);
+                                    }
+                                }
+                            }
+
+                            if (origemMatriz.Linha == 4)
+                            {
+                                // andou a "SUDESTE", capturar a "LESTE"
+                                if (destinoMatriz.Coluna == origemMatriz.Coluna + 1)
+                                {
+                                    posicaoEnpassant = new('a', 1)
+                                    {
+                                        Linha = origemMatriz.Linha,
+                                        Coluna = destinoMatriz.Coluna
+                                    };
+                                    pecaCapturada = Tabuleiro.RetirarPeca(
+                                        posicaoEnpassant.ToPosicaoXadrez()
+                                    );
+
+                                    if (pecaCapturada != null)
+                                    {
+                                        pecaCapturada.SetPosicaoXadrez(Tabuleiro, null);
+                                        PecasEmJogo.Remove(pecaCapturada);
+                                        PecasCapturadas.Add(pecaCapturada);
+                                    }
+                                }
+
+                                // andou a "SUDOESTE", capturar a "OESTE"
+                                if (destinoMatriz.Coluna == origemMatriz.Coluna - 1)
+                                {
+                                    posicaoEnpassant = new('a', 1)
+                                    {
+                                        Linha = origemMatriz.Linha,
+                                        Coluna = destinoMatriz.Coluna
+                                    };
+                                    pecaCapturada = Tabuleiro.RetirarPeca(
+                                        posicaoEnpassant.ToPosicaoXadrez()
+                                    );
+
+                                    if (pecaCapturada != null)
+                                    {
+                                        pecaCapturada.SetPosicaoXadrez(Tabuleiro, null);
+                                        PecasEmJogo.Remove(pecaCapturada);
+                                        PecasCapturadas.Add(pecaCapturada);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    Tabuleiro.ColocarPeca(peca, destino.Coluna, destino.Linha);
+                    peca.SetPosicaoXadrez(Tabuleiro, destino);
                     peca.IncrementarMovimento(Tabuleiro);
                     Turno++;
                     AlternarJogadorAtual();

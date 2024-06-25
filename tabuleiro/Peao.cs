@@ -18,6 +18,7 @@ namespace tabuleiro
             PosicaoMatriz posicaoMatriz;
             PosicaoXadrez posicaoXadrez;
             Boolean temInimigo, estaVaga, posicaoValida;
+            Peca? pecaInimiga;
 
             if (Tabuleiro != null)
                 matriz = new Boolean[Tabuleiro.Linhas, Tabuleiro.Colunas];
@@ -70,6 +71,34 @@ namespace tabuleiro
                     temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
                     if (posicaoValida && temInimigo)
                         matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+
+                    // #jogadaEspecial: En-Passant (linha 3 na matriz, linha 5 no xadrez)                    
+                    if (PosicaoXadrez.Linha == 5)
+                    {
+                        // inimigo a "LESTE", casa vazia a "NORDESTE", movimento a "NORDESTE"
+                        posicaoXadrez = new(PosicaoXadrez.Coluna, PosicaoXadrez.Linha);
+                        posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
+                        posicaoMatriz.Coluna++;
+                        pecaInimiga = Tabuleiro.RetornarAPecaEmJogo(
+                            posicaoMatriz.ToPosicaoXadrez()
+                        );
+                        posicaoMatriz.Linha--;
+                        estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                        if (estaVaga && pecaInimiga != null && pecaInimiga.Cor != Cor)
+                            matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+
+                        // inimigo a "OESTE", casa vazia a "NOROESTE", movimento a "NORDESTE"
+                        posicaoXadrez = new(PosicaoXadrez.Coluna, PosicaoXadrez.Linha);
+                        posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
+                        posicaoMatriz.Coluna--;
+                        pecaInimiga = Tabuleiro.RetornarAPecaEmJogo(
+                            posicaoMatriz.ToPosicaoXadrez()
+                        );
+                        posicaoMatriz.Linha--;
+                        estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                        if (estaVaga && pecaInimiga != null && pecaInimiga.Cor != Cor)
+                            matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+                    }
                 }
                 else
                 {
@@ -115,6 +144,34 @@ namespace tabuleiro
                     temInimigo = Tabuleiro.TemInimigo(this, posicaoMatriz.ToPosicaoXadrez());
                     if (posicaoValida && temInimigo)
                         matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+
+                    // #jogadaEspecial: En-Passant (linha 4 na matriz, linha 4 no xadrez)                    
+                    if (PosicaoXadrez.Linha == 4)
+                    {
+                        // inimigo a "LESTE", casa vazia a "SUDESTE", movimento a "SUDESTE"
+                        posicaoXadrez = new(PosicaoXadrez.Coluna, PosicaoXadrez.Linha);
+                        posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
+                        posicaoMatriz.Coluna++;
+                        pecaInimiga = Tabuleiro.RetornarAPecaEmJogo(
+                            posicaoMatriz.ToPosicaoXadrez()
+                        );
+                        posicaoMatriz.Linha++;
+                        estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                        if (estaVaga && pecaInimiga != null && pecaInimiga.Cor != Cor)
+                            matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+
+                        // inimigo a "OESTE", casa vazia a "SUDOESTE", movimento a "SUDOESTE"
+                        posicaoXadrez = new(PosicaoXadrez.Coluna, PosicaoXadrez.Linha);
+                        posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
+                        posicaoMatriz.Coluna--;
+                        pecaInimiga = Tabuleiro.RetornarAPecaEmJogo(
+                            posicaoMatriz.ToPosicaoXadrez()
+                        );
+                        posicaoMatriz.Linha++;
+                        estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                        if (estaVaga && pecaInimiga != null && pecaInimiga.Cor != Cor)
+                            matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+                    }
                 }
             }
 
