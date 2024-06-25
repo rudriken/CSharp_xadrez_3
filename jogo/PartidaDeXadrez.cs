@@ -96,12 +96,18 @@ namespace jogo
         public void MoverPeca(PosicaoXadrez? origem, PosicaoXadrez? destino)
         {
             Boolean podeMover;
-            Peca? peca, pecaCapturada;
+            Peca? peca, pecaCapturada, torre;
+            PosicaoMatriz origemReiMatriz, destinoReiMatriz;
 
             peca = Tabuleiro.RetornarAPecaEmJogo(origem);
             podeMover = PodeMoverPeca(origem, destino);
 
-            if (destino != null && peca != null && peca.PosicaoXadrez != null)
+            if (
+                origem != null &&
+                destino != null &&
+                peca != null &&
+                peca.PosicaoXadrez != null
+            )
             {
                 if (podeMover)
                 {
@@ -117,6 +123,83 @@ namespace jogo
 
                     Tabuleiro.ColocarPeca(peca, destino.Coluna, destino.Linha);
                     peca.SetPosicaoXadrez(Tabuleiro, destino);
+
+                    if (peca is Rei)
+                    {
+                        origemReiMatriz = origem.ToPosicaoMatriz();
+                        destinoReiMatriz = destino.ToPosicaoMatriz();
+
+                        // #jogadaEspecial: Roque Pequeno
+                        if (destinoReiMatriz.Coluna == origemReiMatriz.Coluna + 2)
+                        {
+                            if (peca.Cor == Cor.Branco)
+                            {
+                                torre = Tabuleiro.RetornarAPecaEmJogo(
+                                    new PosicaoXadrez('h', 1)
+                                );
+
+                                if (torre != null && torre.PosicaoXadrez != null)
+                                {
+                                    Tabuleiro.RetirarPeca(torre.PosicaoXadrez);
+                                    Tabuleiro.ColocarPeca(torre, 'f', 1);
+                                    torre.SetPosicaoXadrez(
+                                        Tabuleiro, new PosicaoXadrez('f', 1)
+                                    );
+                                }
+                            }
+                            else
+                            {
+                                torre = Tabuleiro.RetornarAPecaEmJogo(
+                                    new PosicaoXadrez('h', 8)
+                                );
+
+                                if (torre != null && torre.PosicaoXadrez != null)
+                                {
+                                    Tabuleiro.RetirarPeca(torre.PosicaoXadrez);
+                                    Tabuleiro.ColocarPeca(torre, 'f', 8);
+                                    torre.SetPosicaoXadrez(
+                                        Tabuleiro, new PosicaoXadrez('f', 8)
+                                    );
+                                }
+                            }
+                        }
+
+                        // #jogadaEspecial: Roque Grande
+                        if (destinoReiMatriz.Coluna == origemReiMatriz.Coluna - 2)
+                        {
+                            if (peca.Cor == Cor.Branco)
+                            {
+                                torre = Tabuleiro.RetornarAPecaEmJogo(
+                                    new PosicaoXadrez('a', 1)
+                                );
+
+                                if (torre != null && torre.PosicaoXadrez != null)
+                                {
+                                    Tabuleiro.RetirarPeca(torre.PosicaoXadrez);
+                                    Tabuleiro.ColocarPeca(torre, 'd', 1);
+                                    torre.SetPosicaoXadrez(
+                                        Tabuleiro, new PosicaoXadrez('d', 1)
+                                    );
+                                }
+                            }
+                            else
+                            {
+                                torre = Tabuleiro.RetornarAPecaEmJogo(
+                                    new PosicaoXadrez('a', 8)
+                                );
+
+                                if (torre != null && torre.PosicaoXadrez != null)
+                                {
+                                    Tabuleiro.RetirarPeca(torre.PosicaoXadrez);
+                                    Tabuleiro.ColocarPeca(torre, 'd', 8);
+                                    torre.SetPosicaoXadrez(
+                                        Tabuleiro, new PosicaoXadrez('d', 8)
+                                    );
+                                }
+                            }
+                        }
+                    }
+
                     peca.IncrementarMovimento(Tabuleiro);
                     Turno++;
                     AlternarJogadorAtual();
