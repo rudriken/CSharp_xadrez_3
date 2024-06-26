@@ -170,9 +170,10 @@ namespace jogo
         public void MoverPeca(PosicaoXadrez? origem, PosicaoXadrez? destino)
         {
             Boolean podeMover, estaEmXeque;
-            Peca? peca, pecaCapturada, torre, pecaEnpassant;
+            Peca? peca, pecaCapturada, torre, pecaEnpassant, promocao;
             Peao peaoEnpassant;
             PosicaoMatriz origemMatriz, destinoMatriz, posicaoEnpassant;
+            Int32 guardaMovimentos;
 
             peca = Tabuleiro.RetornarAPecaEmJogo(origem);
             podeMover = PodeMoverPeca(origem, destino);
@@ -415,6 +416,34 @@ namespace jogo
                                     }
                                 }
                             }
+                        }
+
+                        // #jogadaEspecial: Promoção
+                        /* Quando o Peão chega na última linha, ele se tornará uma Dama.
+                         * Mecânica do processo:
+                         *   1-> O Peão é retirado das peças em jogo;
+                         *   2-> O Peão é retirado do tabuleiro;
+                         *   3-> é criada uma nova Dama;
+                         *   4-> a nova Dama tem seu tabuleiro definido;
+                         *   5-> a nova Dama tem sua quantidade de movimentos atualizada;
+                         *   6-> a nova Dama é inseridas nas peças em jogo;
+                         *   7-> a peça, anteriormente um peão, agora será Dama;
+                         *   8-> a nova peça é inserida no tabuleiro;
+                         *   9-> a nova peça tem sua posição no xadrez atualizada;
+                         *  10-> a nova peça tem seu movimento incrementado;
+                         *  11-> o turno é incrementado
+                         */
+                        if (destino.Linha == 8 || destino.Linha == 1)
+                        {
+                            guardaMovimentos = peca.Movimentos;
+
+                            PecasEmJogo.Remove(peca);
+                            Tabuleiro.RetirarPeca(origem);
+                            promocao = new Dama(JogadorAtual);
+                            promocao.SetTabuleiro(Tabuleiro, Tabuleiro);
+                            promocao.SetMovimentos(Tabuleiro, guardaMovimentos);
+                            PecasEmJogo.Add(promocao);
+                            peca = promocao;
                         }
                     }
 

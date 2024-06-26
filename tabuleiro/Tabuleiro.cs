@@ -131,7 +131,7 @@ namespace tabuleiro
 
                 if (!estaVaga)
                     throw new TabuleiroException(
-                        $"Posição ({posicaoXadrez}) está ocupada!"
+                        $"Posição '{posicaoXadrez}' está ocupada!"
                     );
             }
         }
@@ -158,6 +158,9 @@ namespace tabuleiro
             //ColocarPeca(new Peao(Cor.Branco), 'f', 2);
             //ColocarPeca(new Peao(Cor.Branco), 'g', 2);
             //ColocarPeca(new Peao(Cor.Branco), 'h', 2);
+
+            //ColocarPeca(new Peao(Cor.Branco), 'h', 5);
+            //ColocarPeca(new Peao(Cor.Preto), 'd', 4);
 
 
             ColocarPeca(new Torre(Cor.Branco), 'A', 1);

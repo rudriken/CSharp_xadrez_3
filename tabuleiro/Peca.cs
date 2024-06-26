@@ -9,6 +9,16 @@ namespace tabuleiro
         public Tabuleiro? Tabuleiro { get; protected set; } = null;
         public Int32 Movimentos { get; protected set; } = 0;
 
+        public void SetMovimentos(Object objeto, Int32 movimentos)
+        {
+            if (objeto is Tabuleiro)
+                Movimentos = movimentos;
+            else
+                throw new TabuleiroException(
+                    "Sem permissão para alterar a quantidade de movimentos da peça!"
+                );
+        }
+
         public void SetPosicaoXadrez(Object objeto, PosicaoXadrez? pos)
         {
             if (objeto is Tabuleiro)
