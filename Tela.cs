@@ -34,7 +34,9 @@ namespace xadrez_3
                     throw new TabuleiroException("Posição sem peça!");
 
                 if (peca.Cor != partida.JogadorAtual)
-                    throw new TabuleiroException("Peça não correspondente ao jogador atual! ");
+                    throw new TabuleiroException(
+                        "Peça não correspondente ao jogador atual! "
+                    );
 
                 movimentosPossiveis = peca.MovimentosPossiveis();
 

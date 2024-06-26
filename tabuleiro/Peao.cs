@@ -102,7 +102,9 @@ namespace tabuleiro
                             );
                             if (posicaoValida)
                             {
-                                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                                estaVaga = Tabuleiro.EstaVaga(
+                                    posicaoMatriz.ToPosicaoXadrez()
+                                );
                                 if (
                                     estaVaga &&
                                     pecaInimiga != null &&
@@ -132,7 +134,9 @@ namespace tabuleiro
                             );
                             if (posicaoValida)
                             {
-                                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                                estaVaga = Tabuleiro.EstaVaga(
+                                    posicaoMatriz.ToPosicaoXadrez()
+                                );
                                 if (
                                     estaVaga &&
                                     pecaInimiga != null &&
@@ -211,7 +215,9 @@ namespace tabuleiro
                             );
                             if (posicaoValida)
                             {
-                                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                                estaVaga = Tabuleiro.EstaVaga(
+                                    posicaoMatriz.ToPosicaoXadrez()
+                                );
                                 if (
                                     estaVaga &&
                                     pecaInimiga != null &&
@@ -241,7 +247,9 @@ namespace tabuleiro
                             );
                             if (posicaoValida)
                             {
-                                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                                estaVaga = Tabuleiro.EstaVaga(
+                                    posicaoMatriz.ToPosicaoXadrez()
+                                );
                                 if (
                                     estaVaga &&
                                     pecaInimiga != null &&

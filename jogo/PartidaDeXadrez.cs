@@ -332,7 +332,9 @@ namespace jogo
                                         if (pecaEnpassant is Peao peao)
                                         {
                                             peaoEnpassant = peao;
-                                            peaoEnpassant.SetCapturadoEnPassant(Tabuleiro, true);
+                                            peaoEnpassant.SetCapturadoEnPassant(
+                                                Tabuleiro, true
+                                            );
                                             pecaCapturada = Tabuleiro.RetirarPeca(
                                                 posicaoEnpassant.ToPosicaoXadrez()
                                             );
@@ -365,7 +367,9 @@ namespace jogo
                                         if (pecaEnpassant is Peao peao)
                                         {
                                             peaoEnpassant = peao;
-                                            peaoEnpassant.SetCapturadoEnPassant(Tabuleiro, true);
+                                            peaoEnpassant.SetCapturadoEnPassant(
+                                                Tabuleiro, true
+                                            );
                                             pecaCapturada = Tabuleiro.RetirarPeca(
                                                 posicaoEnpassant.ToPosicaoXadrez()
                                             );
@@ -395,7 +399,9 @@ namespace jogo
                                         if (pecaEnpassant is Peao peao)
                                         {
                                             peaoEnpassant = peao;
-                                            peaoEnpassant.SetCapturadoEnPassant(Tabuleiro, true);
+                                            peaoEnpassant.SetCapturadoEnPassant(
+                                                Tabuleiro, true
+                                            );
                                             pecaCapturada = Tabuleiro.RetirarPeca(
                                                 posicaoEnpassant.ToPosicaoXadrez()
                                             );
@@ -516,6 +522,7 @@ namespace jogo
                     PecasCapturadas.Remove(pecaCapturada);
                     PecasEmJogo.Add(pecaCapturada);
 
+                    // e coloca a peça anteriormente capturada de volta no tabuleiro ...
                     if (pecaCapturada.PosicaoXadrez != null)
                         Tabuleiro.ColocarPeca(
                             pecaCapturada,
