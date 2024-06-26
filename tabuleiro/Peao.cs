@@ -4,6 +4,14 @@ namespace tabuleiro
 {
     class Peao(Cor cor) : Peca(cor)
     {
+        public Boolean CapturadoEnPassant { get; private set; }
+
+        public void SetCapturadoEnPassant(Object objeto, Boolean capturadoEnPassant)
+        {
+            if (objeto is Tabuleiro)
+                CapturadoEnPassant = capturadoEnPassant;
+        }
+
         public override String ToString()
         {
             return "P";
@@ -75,29 +83,65 @@ namespace tabuleiro
                     // #jogadaEspecial: En-Passant (linha 3 na matriz, linha 5 no xadrez)                    
                     if (PosicaoXadrez.Linha == 5)
                     {
-                        // inimigo a "LESTE", casa vazia a "NORDESTE", movimento a "NORDESTE"
+                        // Peão inimigo a "LESTE", casa vazia a "NORDESTE",
+                        // movimento a "NORDESTE"
                         posicaoXadrez = new(PosicaoXadrez.Coluna, PosicaoXadrez.Linha);
                         posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
                         posicaoMatriz.Coluna++;
-                        pecaInimiga = Tabuleiro.RetornarAPecaEmJogo(
+                        posicaoValida = Tabuleiro.PosicaoValida(
                             posicaoMatriz.ToPosicaoXadrez()
                         );
-                        posicaoMatriz.Linha--;
-                        estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
-                        if (estaVaga && pecaInimiga != null && pecaInimiga.Cor != Cor)
-                            matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+                        if (posicaoValida)
+                        {
+                            pecaInimiga = Tabuleiro.RetornarAPecaEmJogo(
+                                posicaoMatriz.ToPosicaoXadrez()
+                            );
+                            posicaoMatriz.Linha--;
+                            posicaoValida = Tabuleiro.PosicaoValida(
+                                posicaoMatriz.ToPosicaoXadrez()
+                            );
+                            if (posicaoValida)
+                            {
+                                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                                if (
+                                    estaVaga &&
+                                    pecaInimiga != null &&
+                                    pecaInimiga is Peao &&
+                                    pecaInimiga.Cor != Cor
+                                )
+                                    matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+                            }
+                        }
 
-                        // inimigo a "OESTE", casa vazia a "NOROESTE", movimento a "NORDESTE"
+                        // Peão inimigo a "OESTE", casa vazia a "NOROESTE",
+                        // movimento a "NORDESTE"
                         posicaoXadrez = new(PosicaoXadrez.Coluna, PosicaoXadrez.Linha);
                         posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
                         posicaoMatriz.Coluna--;
-                        pecaInimiga = Tabuleiro.RetornarAPecaEmJogo(
+                        posicaoValida = Tabuleiro.PosicaoValida(
                             posicaoMatriz.ToPosicaoXadrez()
                         );
-                        posicaoMatriz.Linha--;
-                        estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
-                        if (estaVaga && pecaInimiga != null && pecaInimiga.Cor != Cor)
-                            matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+                        if (posicaoValida)
+                        {
+                            pecaInimiga = Tabuleiro.RetornarAPecaEmJogo(
+                                posicaoMatriz.ToPosicaoXadrez()
+                            );
+                            posicaoMatriz.Linha--;
+                            posicaoValida = Tabuleiro.PosicaoValida(
+                                posicaoMatriz.ToPosicaoXadrez()
+                            );
+                            if (posicaoValida)
+                            {
+                                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                                if (
+                                    estaVaga &&
+                                    pecaInimiga != null &&
+                                    pecaInimiga is Peao &&
+                                    pecaInimiga.Cor != Cor
+                                )
+                                    matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+                            }
+                        }
                     }
                 }
                 else
@@ -148,29 +192,65 @@ namespace tabuleiro
                     // #jogadaEspecial: En-Passant (linha 4 na matriz, linha 4 no xadrez)                    
                     if (PosicaoXadrez.Linha == 4)
                     {
-                        // inimigo a "LESTE", casa vazia a "SUDESTE", movimento a "SUDESTE"
+                        // Peão inimigo a "LESTE", casa vazia a "SUDESTE",
+                        // movimento a "SUDESTE"
                         posicaoXadrez = new(PosicaoXadrez.Coluna, PosicaoXadrez.Linha);
                         posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
                         posicaoMatriz.Coluna++;
-                        pecaInimiga = Tabuleiro.RetornarAPecaEmJogo(
+                        posicaoValida = Tabuleiro.PosicaoValida(
                             posicaoMatriz.ToPosicaoXadrez()
                         );
-                        posicaoMatriz.Linha++;
-                        estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
-                        if (estaVaga && pecaInimiga != null && pecaInimiga.Cor != Cor)
-                            matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+                        if (posicaoValida)
+                        {
+                            pecaInimiga = Tabuleiro.RetornarAPecaEmJogo(
+                                posicaoMatriz.ToPosicaoXadrez()
+                            );
+                            posicaoMatriz.Linha++;
+                            posicaoValida = Tabuleiro.PosicaoValida(
+                                posicaoMatriz.ToPosicaoXadrez()
+                            );
+                            if (posicaoValida)
+                            {
+                                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                                if (
+                                    estaVaga &&
+                                    pecaInimiga != null &&
+                                    pecaInimiga is Peao &&
+                                    pecaInimiga.Cor != Cor
+                                )
+                                    matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+                            }
+                        }
 
-                        // inimigo a "OESTE", casa vazia a "SUDOESTE", movimento a "SUDOESTE"
+                        // Peão inimigo a "OESTE", casa vazia a "SUDOESTE",
+                        // movimento a "SUDOESTE"
                         posicaoXadrez = new(PosicaoXadrez.Coluna, PosicaoXadrez.Linha);
                         posicaoMatriz = posicaoXadrez.ToPosicaoMatriz();
                         posicaoMatriz.Coluna--;
-                        pecaInimiga = Tabuleiro.RetornarAPecaEmJogo(
+                        posicaoValida = Tabuleiro.PosicaoValida(
                             posicaoMatriz.ToPosicaoXadrez()
                         );
-                        posicaoMatriz.Linha++;
-                        estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
-                        if (estaVaga && pecaInimiga != null && pecaInimiga.Cor != Cor)
-                            matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+                        if (posicaoValida)
+                        {
+                            pecaInimiga = Tabuleiro.RetornarAPecaEmJogo(
+                                posicaoMatriz.ToPosicaoXadrez()
+                            );
+                            posicaoMatriz.Linha++;
+                            posicaoValida = Tabuleiro.PosicaoValida(
+                                posicaoMatriz.ToPosicaoXadrez()
+                            );
+                            if (posicaoValida)
+                            {
+                                estaVaga = Tabuleiro.EstaVaga(posicaoMatriz.ToPosicaoXadrez());
+                                if (
+                                    estaVaga &&
+                                    pecaInimiga != null &&
+                                    pecaInimiga is Peao &&
+                                    pecaInimiga.Cor != Cor
+                                )
+                                    matriz[posicaoMatriz.Linha, posicaoMatriz.Coluna] = true;
+                            }
+                        }
                     }
                 }
             }

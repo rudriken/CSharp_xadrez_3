@@ -30,8 +30,8 @@ namespace xadrez_3
             {
                 peca = partida.Tabuleiro.RetornarAPecaEmJogo(origemXadrez);
 
-                if (peca == null)                
-                    throw new TabuleiroException("Posição sem peça!");                
+                if (peca == null)
+                    throw new TabuleiroException("Posição sem peça!");
 
                 if (peca.Cor != partida.JogadorAtual)
                     throw new TabuleiroException("Peça não correspondente ao jogador atual! ");
@@ -40,7 +40,10 @@ namespace xadrez_3
 
                 foreach (Boolean possivel in movimentosPossiveis)
                     if (possivel)
+                    {
                         movimentoPossivel = true;
+                        break;
+                    }
 
                 if (!movimentoPossivel)
                     throw new TabuleiroException("Nenhum movimento possível! ");
@@ -103,12 +106,29 @@ namespace xadrez_3
             Console.ForegroundColor = corLetraOriginal;
 
             Console.WriteLine("\nTurno: " + partida.Turno);
-            Console.WriteLine("Jogador atual: " + partida.JogadorAtual + "\n");
+            Console.Write("Jogador atual: ");
+
+            if (partida.JogadorAtual == Cor.Branco)
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            else
+                Console.ForegroundColor = ConsoleColor.Blue;
+
+            Console.WriteLine(partida.JogadorAtual + "\n");
+
+            Console.ForegroundColor = corLetraOriginal;
+
+            if (partida.Xeque)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("XEQUE! \n");
+                Console.ForegroundColor = corLetraOriginal;
+            }
+
             Console.WriteLine("Peças capturadas: ");
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Brancas: [");
-            foreach (Peca item in partida.CapturadasBrancas())            
+            foreach (Peca item in partida.CapturadasBrancas())
                 Console.Write(item + " ");
             Console.WriteLine("]");
             Console.ForegroundColor = corLetraOriginal;
