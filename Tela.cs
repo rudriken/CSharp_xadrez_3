@@ -24,7 +24,7 @@ namespace xadrez_3
 
             pecasEmJogo = partida.PecasEmJogo;
 
-            origemXadrez = PosicaoXadrez.ConverterEmPosicaoXadrez(origemString);
+            origemXadrez = PosicaoXadrez.ConverterEmPosicaoXadrez(origemString);            
 
             if (origemXadrez != null)
             {
@@ -119,7 +119,7 @@ namespace xadrez_3
 
             Console.ForegroundColor = corLetraOriginal;
 
-            if (partida.Xeque)
+            if (partida.Xeque && !partida.Terminada)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("XEQUE! \n");
@@ -146,6 +146,16 @@ namespace xadrez_3
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("XEQUE MATE! \n");
+                Console.ForegroundColor = corLetraOriginal;
+
+                Console.Write("VENCEDOR: ");
+
+                if (partida.Vencedor == Cor.Branco)
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                else
+                    Console.ForegroundColor = ConsoleColor.Blue;
+
+                Console.WriteLine(partida.Vencedor);
                 Console.ForegroundColor = corLetraOriginal;
             }
         }

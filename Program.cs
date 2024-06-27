@@ -1,6 +1,5 @@
 ﻿using extra;
 using jogo;
-using tabuleiro;
 
 namespace xadrez_3
 {
@@ -17,7 +16,6 @@ namespace xadrez_3
             {
                 try
                 {
-                    Console.Clear();
                     Tela.ImprimirTabuleiro(partida, null);
 
                     Console.Write("Origem: ");
@@ -30,19 +28,24 @@ namespace xadrez_3
                     Console.Write("Destino: ");
                     destino = Console.ReadLine();
 
-                    partida.MoverPeca(
+                    partida.ExecutarMovimento(
                         PosicaoXadrez.ConverterEmPosicaoXadrez(origem),
                         PosicaoXadrez.ConverterEmPosicaoXadrez(destino)
                     );
 
                     Tela.ImprimirTabuleiro(partida, null);
+
+                    Console.Clear();
                 }
                 catch (TabuleiroException erro)
                 {
                     Console.WriteLine(erro.Message);
                     Console.ReadLine();
+                    Console.Clear();
                 }
             }
+
+            Tela.ImprimirTabuleiro(partida, null);
         }
     }
 }

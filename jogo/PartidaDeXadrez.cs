@@ -12,6 +12,7 @@ namespace jogo
         public List<Peca> PecasEmJogo { get; private set; }
         public List<Peca> PecasCapturadas { get; private set; }
         public Boolean Xeque { get; private set; }
+        public Cor Vencedor {  get; private set; }
 
         public PartidaDeXadrez()
         {
@@ -109,7 +110,7 @@ namespace jogo
          * Verifica se existe, pelo menos, um movimento possível de qualquer peça inimiga em 
          * jogo.
          */
-        private Boolean VerificarXeque()
+        private void VerificarXeque()
         {
             Boolean[,] movimentosPossiveis;
             List<Peca> pecasInimigasEmJogo;
@@ -144,30 +145,21 @@ namespace jogo
                                     meuRei.PosicaoXadrez.ToPosicaoMatriz().Coluna
                                 ]
                             )
-                            {
                                 Xeque = true;
-                                return true;
-                            }
             }
-
-            Xeque = false;
-            return false;
         }
 
         /* 
          * Verifica se existe, pelo menos, um movimento possível para que o jogador atual 
-         * saia do xeque, para não ocorrer o xeque-mate.
+         * saia do XEQUE, para não ocorrer o XEQUE-MATE.
          */
         private Boolean VerificarXequeMate()
         {
-            Boolean estaEmXeque;
             Boolean[,] movimentosPossiveis;
             PosicaoMatriz? origemMatriz, destinoMatriz;
             Peca? pecaCapturada;
 
-            estaEmXeque = VerificarXeque();
-
-            if (estaEmXeque)
+            if (Xeque)
             {
                 if (JogadorAtual == Cor.Branco)
                 {
@@ -189,7 +181,7 @@ namespace jogo
                                         destinoMatriz.ToPosicaoXadrez()
                                     );
 
-                                    estaEmXeque = VerificarXeque();
+                                    VerificarXeque();
 
                                     DesfazerMovimento(
                                         origemMatriz?.ToPosicaoXadrez(),
@@ -197,7 +189,7 @@ namespace jogo
                                         pecaCapturada
                                     );
 
-                                    if (!estaEmXeque)
+                                    if (!Xeque)
                                         return false;
                                 }
                             }
@@ -224,7 +216,7 @@ namespace jogo
                                         destinoMatriz.ToPosicaoXadrez()
                                     );
 
-                                    estaEmXeque = VerificarXeque();
+                                    VerificarXeque();
 
                                     DesfazerMovimento(
                                         origemMatriz?.ToPosicaoXadrez(),
@@ -232,7 +224,7 @@ namespace jogo
                                         null
                                     );
 
-                                    if (!estaEmXeque)
+                                    if (!Xeque)
                                         return false;
                                 }
                             }
@@ -261,7 +253,7 @@ namespace jogo
          */
         public Peca? MoverPeca(PosicaoXadrez? origem, PosicaoXadrez? destino)
         {
-            Boolean podeMover, xequeMate;
+            Boolean podeMover;
             Peca? peca, pecaCapturada, torre, pecaEnpassant, promocao;
             Peao peaoEnpassant;
             PosicaoMatriz origemMatriz, destinoMatriz, posicaoEnpassant;
@@ -293,44 +285,67 @@ namespace jogo
                         PecasCapturadas.Add(pecaCapturada);
                     }
 
+                    // se a peça mexida é um Rei ...
                     if (peca is Rei)
                     {
                         // #jogadaEspecial: Roque Pequeno
+                        // a coluna de destino tem duas casas a mais da sua origem
+                        // e a Torre está a 3 colunas a mais de sua origem (coluna 'H') ...
                         if (destinoMatriz.Coluna == origemMatriz.Coluna + 2)
                         {
+                            // se o Rei mexido for branco ...
                             if (peca.Cor == Cor.Branco)
                             {
                                 torre = Tabuleiro.RetornarAPecaEmJogo(
                                     new PosicaoXadrez('h', 1)
                                 );
 
-                                if (torre != null && torre.PosicaoXadrez != null)
+                                // se a Torre está na sua posição original no tabuleiro
+                                // e ainda sem movimento ...
+                                if (
+                                    torre != null &&
+                                    torre is Torre &&
+                                    torre.Movimentos == 0 &&
+                                    torre.PosicaoXadrez != null
+                                )
                                 {
                                     Tabuleiro.RetirarPeca(torre.PosicaoXadrez);
                                     Tabuleiro.ColocarPeca(torre, 'f', 1);
                                     torre.SetPosicaoXadrez(
                                         Tabuleiro, new PosicaoXadrez('f', 1)
                                     );
+                                    torre.IncrementarMovimento(Tabuleiro);
                                 }
                             }
+                            // se o Rei mexido for preto ...
                             else
                             {
                                 torre = Tabuleiro.RetornarAPecaEmJogo(
                                     new PosicaoXadrez('h', 8)
                                 );
 
-                                if (torre != null && torre.PosicaoXadrez != null)
+                                // se a Torre está na sua posição original no tabuleiro
+                                // e ainda sem movimento ...
+                                if (
+                                    torre != null &&
+                                    torre is Torre &&
+                                    torre.Movimentos == 0 &&
+                                    torre.PosicaoXadrez != null
+                                )
                                 {
                                     Tabuleiro.RetirarPeca(torre.PosicaoXadrez);
                                     Tabuleiro.ColocarPeca(torre, 'f', 8);
                                     torre.SetPosicaoXadrez(
                                         Tabuleiro, new PosicaoXadrez('f', 8)
                                     );
+                                    torre.IncrementarMovimento(Tabuleiro);
                                 }
                             }
                         }
 
                         // #jogadaEspecial: Roque Grande
+                        // a coluna de destino tem duas casas a menos da sua origem
+                        // e a Torre está a 4 colunas a menos de sua origem (coluna 'A') ...
                         if (destinoMatriz.Coluna == origemMatriz.Coluna - 2)
                         {
                             if (peca.Cor == Cor.Branco)
@@ -339,13 +354,21 @@ namespace jogo
                                     new PosicaoXadrez('a', 1)
                                 );
 
-                                if (torre != null && torre.PosicaoXadrez != null)
+                                // se a Torre está na sua posição original no tabuleiro
+                                // e ainda sem movimento ...
+                                if (
+                                    torre != null &&
+                                    torre is Torre &&
+                                    torre.Movimentos == 0 &&
+                                    torre.PosicaoXadrez != null
+                                )
                                 {
                                     Tabuleiro.RetirarPeca(torre.PosicaoXadrez);
                                     Tabuleiro.ColocarPeca(torre, 'd', 1);
                                     torre.SetPosicaoXadrez(
                                         Tabuleiro, new PosicaoXadrez('d', 1)
                                     );
+                                    torre.IncrementarMovimento(Tabuleiro);
                                 }
                             }
                             else
@@ -354,13 +377,21 @@ namespace jogo
                                     new PosicaoXadrez('a', 8)
                                 );
 
-                                if (torre != null && torre.PosicaoXadrez != null)
+                                // se a Torre está na sua posição original no tabuleiro
+                                // e ainda sem movimento ...
+                                if (
+                                    torre != null &&
+                                    torre is Torre &&
+                                    torre.Movimentos == 0 &&
+                                    torre.PosicaoXadrez != null
+                                )
                                 {
                                     Tabuleiro.RetirarPeca(torre.PosicaoXadrez);
                                     Tabuleiro.ColocarPeca(torre, 'd', 8);
                                     torre.SetPosicaoXadrez(
                                         Tabuleiro, new PosicaoXadrez('d', 8)
                                     );
+                                    torre.IncrementarMovimento(Tabuleiro);
                                 }
                             }
                         }
@@ -543,33 +574,67 @@ namespace jogo
                     Tabuleiro.ColocarPeca(peca, destino.Coluna, destino.Linha);
                     peca.SetPosicaoXadrez(Tabuleiro, destino);
                     peca.IncrementarMovimento(Tabuleiro);
-                    Turno++;
-
-                    Xeque = VerificarXeque();
-
-                    if (Xeque)
-                    {
-                        // não posso me colocar em XEQUE, então minha jogada é desfeita.
-                        DesfazerMovimento(origem, destino, pecaCapturada);
-
-                        throw new TabuleiroException(
-                            "O seu Rei está em XEQUE! Jogada desfeita! "
-                        );
-                    }
-                    else
-                    {
-                        AlternarJogadorAtual();
-                        xequeMate = VerificarXequeMate();
-
-                        if (xequeMate)
-                            Terminada = true;
-                    }
+                    Turno++;                    
                 }
                 else
                     throw new TabuleiroException("Posição de destino não permitida! ");
             }
 
             return pecaCapturada;
+        }
+
+        /* 
+         * Move a peça escolhida de sua origem para o seu destino, verifica se o jogador 
+         * atual entre em XEQUE com essa jogada. 
+         * Se entrar em XEQUE, é desfeita (revertida) essa jogada. 
+         * Se não entrar em XEQUE, é alternado o jogador atual e verifica se ele entra em 
+         * XEQUE com a execução desse movimento.
+         */
+        public void ExecutarMovimento(PosicaoXadrez? origem, PosicaoXadrez? destino)
+        {
+            Peca? pecaCapturada;
+            Boolean xequeMate;
+
+            pecaCapturada = MoverPeca(origem, destino);
+
+            // verifica se, com o movimento do jogador atual, ele entra em XEQUE ...
+            VerificarXeque();
+
+            if (Xeque)
+            {
+                // se o jogador atual se colocar em XEQUE sua jogada é desfeita ...
+                DesfazerMovimento(origem, destino, pecaCapturada);
+
+                // e sai do XEQUE ...
+                Xeque = false;
+
+                throw new TabuleiroException(
+                    "O seu Rei está em XEQUE! Jogada desfeita! "
+                );
+            }
+            // se o jogador atual não se colocou em XEQUE, é alternado o jogador ...
+            else
+            {
+                AlternarJogadorAtual();
+
+                // verificar se o jogador atual está em XEQUE com a jogada
+                // do outro ...
+                VerificarXeque();
+
+                if (Xeque)
+                {
+                    xequeMate = VerificarXequeMate();
+
+                    // e se não há mais o que se possa fazer para sair do XEQUE ...
+                    if (xequeMate)
+                    {
+                        Terminada = true;
+                        AlternarJogadorAtual();
+                        Vencedor = JogadorAtual;
+                    }
+                }
+            }
+
         }
 
         /* 
@@ -608,44 +673,57 @@ namespace jogo
                 peca.PosicaoXadrez != null
             )
             {
+                // retirar a peça mexida de seu destino ...
                 Tabuleiro.RetirarPeca(destino);
 
-                // se houve peça capturada ...
+                // se há peça capturada ...
                 if (pecaCapturada != null)
                 {
-                    // se a peça capturada é um peão ...
-                    if (peca is Peao && pecaCapturada is Peao peao)
+                    // se a peça mexida é um Peão ...
+                    if (peca is Peao)
                     {
-                        peaoCapturadoEnpassant = peao;
-
-                        // se o peão foi capturado por "en-passant" ...
-                        if (peaoCapturadoEnpassant.CapturadoEnPassant)
+                        // se a peça capturada é um Peão ...
+                        if (pecaCapturada is Peao peao)
                         {
-                            origemMatriz = origem.ToPosicaoMatriz();
-                            destinoMatriz = destino.ToPosicaoMatriz();
+                            peaoCapturadoEnpassant = peao;
 
-                            destinoEnpassant = new(0, 0)
+                            // se o Peão foi capturado por "en-passant", a sua origem será
+                            // a mesma linha de origem e a mesma coluna de destino da peça
+                            // mexida ...
+                            if (peaoCapturadoEnpassant.CapturadoEnPassant)
                             {
-                                Linha = origemMatriz.Linha,
-                                Coluna = destinoMatriz.Coluna
-                            };
+                                origemMatriz = origem.ToPosicaoMatriz();
+                                destinoMatriz = destino.ToPosicaoMatriz();
 
-                            pecaCapturada.SetPosicaoXadrez(
-                                Tabuleiro, destinoEnpassant.ToPosicaoXadrez()
-                            );
+                                destinoEnpassant = new(0, 0)
+                                {
+                                    Linha = origemMatriz.Linha,
+                                    Coluna = destinoMatriz.Coluna
+                                };
 
-                            peaoCapturadoEnpassant.SetCapturadoEnPassant(Tabuleiro, false);
+                                pecaCapturada.SetPosicaoXadrez(
+                                    Tabuleiro, destinoEnpassant.ToPosicaoXadrez()
+                                );
+
+                                peaoCapturadoEnpassant.SetCapturadoEnPassant(
+                                    Tabuleiro, false
+                                );
+                            }
+                            // se a captura do Peão foi normal, a sua origem será a mesma
+                            // do destino da peça mexida ...
+                            else
+                                pecaCapturada.SetPosicaoXadrez(Tabuleiro, destino);
                         }
-                        // se a captura do peão foi normal ...
+                        // se a peça capturada não é um Peão, a sua origem será a mesma
+                        // do destino da peça mexida ...
                         else
                             pecaCapturada.SetPosicaoXadrez(Tabuleiro, destino);
+
+
                     }
-                    // se a peça capturada não foi um peão ...
-                    else
-                        pecaCapturada.SetPosicaoXadrez(Tabuleiro, destino);
 
                     // remove a peça capturada das peças capturadas,
-                    // e a coloca nas peças em jogo ...
+                    // a coloca nas peças em jogo ...
                     PecasCapturadas.Remove(pecaCapturada);
                     PecasEmJogo.Add(pecaCapturada);
 
@@ -658,10 +736,17 @@ namespace jogo
                         );
                 }
 
+                // colocar a peça mexida, que foi retirada acima, de volta no tabuleiro ...
                 Tabuleiro.ColocarPeca(peca, origem.Coluna, origem.Linha);
                 peca.SetPosicaoXadrez(Tabuleiro, origem);
+
+                // decrementa o movimento da peça mexida ...
                 peca.DecrementarMovimento(Tabuleiro);
+
+                // decrementa o turno, pois na mexida o turno foi incrementado ...
                 Turno--;
+
+                // mas não alterna o jogador atual.
             }
         }
     }
