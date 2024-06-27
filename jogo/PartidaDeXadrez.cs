@@ -109,7 +109,7 @@ namespace jogo
          * Verifica se existe, pelo menos, um movimento possível de qualquer peça inimiga em 
          * jogo.
          */
-        public Boolean VerificarXeque()
+        private Boolean VerificarXeque()
         {
             Boolean[,] movimentosPossiveis;
             List<Peca> pecasInimigasEmJogo;
@@ -155,6 +155,98 @@ namespace jogo
         }
 
         /* 
+         * Verifica se existe, pelo menos, um movimento possível para que o jogador atual 
+         * saia do xeque, para não ocorrer o xeque-mate.
+         */
+        private Boolean VerificarXequeMate()
+        {
+            Boolean estaEmXeque;
+            Boolean[,] movimentosPossiveis;
+            PosicaoMatriz? origemMatriz, destinoMatriz;
+            Peca? pecaCapturada;
+
+            estaEmXeque = VerificarXeque();
+
+            if (estaEmXeque)
+            {
+                if (JogadorAtual == Cor.Branco)
+                {
+                    foreach (Peca peca in EmJogoBrancas())
+                    {
+                        movimentosPossiveis = peca.MovimentosPossiveis();
+                        origemMatriz = peca.PosicaoXadrez?.ToPosicaoMatriz();
+
+                        for (Int32 i = 0; i < Tabuleiro.Linhas; i++)
+                        {
+                            for (Int32 j = 0; j < Tabuleiro.Colunas; j++)
+                            {
+                                if (movimentosPossiveis[i, j])
+                                {
+                                    destinoMatriz = new(i, j);
+
+                                    pecaCapturada = MoverPeca(
+                                        origemMatriz?.ToPosicaoXadrez(),
+                                        destinoMatriz.ToPosicaoXadrez()
+                                    );
+
+                                    estaEmXeque = VerificarXeque();
+
+                                    DesfazerMovimento(
+                                        origemMatriz?.ToPosicaoXadrez(),
+                                        destinoMatriz.ToPosicaoXadrez(),
+                                        pecaCapturada
+                                    );
+
+                                    if (!estaEmXeque)
+                                        return false;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (Peca peca in EmJogoPretas())
+                    {
+                        movimentosPossiveis = peca.MovimentosPossiveis();
+                        origemMatriz = peca.PosicaoXadrez?.ToPosicaoMatriz();
+
+                        for (Int32 i = 0; i < Tabuleiro.Linhas; i++)
+                        {
+                            for (Int32 j = 0; j < Tabuleiro.Colunas; j++)
+                            {
+                                if (movimentosPossiveis[i, j])
+                                {
+                                    destinoMatriz = new(i, j);
+
+                                    MoverPeca(
+                                        origemMatriz?.ToPosicaoXadrez(),
+                                        destinoMatriz.ToPosicaoXadrez()
+                                    );
+
+                                    estaEmXeque = VerificarXeque();
+
+                                    DesfazerMovimento(
+                                        origemMatriz?.ToPosicaoXadrez(),
+                                        destinoMatriz.ToPosicaoXadrez(),
+                                        null
+                                    );
+
+                                    if (!estaEmXeque)
+                                        return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
+                return false;
+
+            return true;
+        }
+
+        /* 
          * Mecânica da movimentação de uma peça:
          *  1-> retirar de sua origem;
          *  2-> capturar a peça que está no destino, se houver e se for inimiga:
@@ -167,9 +259,9 @@ namespace jogo
          *  6-> incrementar o turno;
          *  7-> alternar o jogador atual.
          */
-        public void MoverPeca(PosicaoXadrez? origem, PosicaoXadrez? destino)
+        public Peca? MoverPeca(PosicaoXadrez? origem, PosicaoXadrez? destino)
         {
-            Boolean podeMover, estaEmXeque;
+            Boolean podeMover, xequeMate;
             Peca? peca, pecaCapturada, torre, pecaEnpassant, promocao;
             Peao peaoEnpassant;
             PosicaoMatriz origemMatriz, destinoMatriz, posicaoEnpassant;
@@ -177,6 +269,7 @@ namespace jogo
 
             peca = Tabuleiro.RetornarAPecaEmJogo(origem);
             podeMover = PodeMoverPeca(origem, destino);
+            pecaCapturada = null;
 
             if (
                 origem != null &&
@@ -452,26 +545,31 @@ namespace jogo
                     peca.IncrementarMovimento(Tabuleiro);
                     Turno++;
 
-                    estaEmXeque = VerificarXeque();
+                    Xeque = VerificarXeque();
 
-                    if (estaEmXeque)
+                    if (Xeque)
                     {
                         // não posso me colocar em XEQUE, então minha jogada é desfeita.
                         DesfazerMovimento(origem, destino, pecaCapturada);
-                        AlternarJogadorAtual();
+
                         throw new TabuleiroException(
-                            "Você colocou o seu Rei em XEQUE! Jogada desfeita! "
+                            "O seu Rei está em XEQUE! Jogada desfeita! "
                         );
                     }
                     else
                     {
                         AlternarJogadorAtual();
-                        VerificarXeque();
+                        xequeMate = VerificarXequeMate();
+
+                        if (xequeMate)
+                            Terminada = true;
                     }
                 }
                 else
                     throw new TabuleiroException("Posição de destino não permitida! ");
             }
+
+            return pecaCapturada;
         }
 
         /* 
@@ -564,7 +662,6 @@ namespace jogo
                 peca.SetPosicaoXadrez(Tabuleiro, origem);
                 peca.DecrementarMovimento(Tabuleiro);
                 Turno--;
-                AlternarJogadorAtual();
             }
         }
     }

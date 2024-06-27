@@ -176,8 +176,8 @@ namespace tabuleiro
             ColocarPeca(new Peao(Cor.Branco), 'C', 2);
             ColocarPeca(new Peao(Cor.Branco), 'D', 2);
             ColocarPeca(new Peao(Cor.Branco), 'E', 2);
-            ColocarPeca(new Peao(Cor.Branco), 'F', 2);
-            ColocarPeca(new Peao(Cor.Branco), 'G', 2);
+            //ColocarPeca(new Peao(Cor.Branco), 'F', 2);
+            //ColocarPeca(new Peao(Cor.Branco), 'G', 2);
             ColocarPeca(new Peao(Cor.Branco), 'H', 2);
 
             ColocarPeca(new Torre(Cor.Preto), 'A', 8);
@@ -185,7 +185,7 @@ namespace tabuleiro
             ColocarPeca(new Bispo(Cor.Preto), 'C', 8);
             ColocarPeca(new Dama(Cor.Preto), 'D', 8);
             ColocarPeca(new Rei(Cor.Preto), 'E', 8);
-            ColocarPeca(new Bispo(Cor.Preto), 'F', 8);
+            ColocarPeca(new Bispo(Cor.Preto), 'g', 5);
             ColocarPeca(new Cavalo(Cor.Preto), 'G', 8);
             ColocarPeca(new Torre(Cor.Preto), 'H', 8);
             ColocarPeca(new Peao(Cor.Preto), 'A', 7);
@@ -196,6 +196,9 @@ namespace tabuleiro
             ColocarPeca(new Peao(Cor.Preto), 'F', 7);
             ColocarPeca(new Peao(Cor.Preto), 'G', 7);
             ColocarPeca(new Peao(Cor.Preto), 'H', 7);
+
+
+
         }
     }
 }

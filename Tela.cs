@@ -141,6 +141,13 @@ namespace xadrez_3
                 Console.Write(item + " ");
             Console.WriteLine("]\n");
             Console.ForegroundColor = corLetraOriginal;
+
+            if (partida.Terminada)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("XEQUE MATE! \n");
+                Console.ForegroundColor = corLetraOriginal;
+            }
         }
     }
 }
