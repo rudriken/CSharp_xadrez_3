@@ -4,6 +4,26 @@ namespace tabuleiro
 {
     class Dama(Cor cor) : Peca(cor)
     {
+        public override void SetPromovida(Object objeto, Boolean promovida)
+        {
+            if (objeto is Tabuleiro)
+                Promovida = promovida;
+            else
+                throw new TabuleiroException(
+                    "Sem permissão para alterar a situação de 'promovida' da peça!"
+                );
+        }
+
+        public override void IncrementarMovPromocao()
+        {
+            MovPromocao++;
+        }
+
+        public override void DecrementarMovPromocao()
+        {
+            MovPromocao--;
+        }
+
         public override String ToString()
         {
             return "D";

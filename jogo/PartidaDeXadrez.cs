@@ -12,7 +12,7 @@ namespace jogo
         public List<Peca> PecasEmJogo { get; private set; }
         public List<Peca> PecasCapturadas { get; private set; }
         public Boolean Xeque { get; private set; }
-        public Cor Vencedor {  get; private set; }
+        public Cor Vencedor { get; private set; }
 
         public PartidaDeXadrez()
         {
@@ -145,8 +145,13 @@ namespace jogo
                                     meuRei.PosicaoXadrez.ToPosicaoMatriz().Coluna
                                 ]
                             )
+                            {
                                 Xeque = true;
+                                return;
+                            }
             }
+
+            Xeque = false;
         }
 
         /* 
@@ -158,6 +163,9 @@ namespace jogo
             Boolean[,] movimentosPossiveis;
             PosicaoMatriz? origemMatriz, destinoMatriz;
             Peca? pecaCapturada;
+            Boolean guardaXeque;
+
+            guardaXeque = Xeque;
 
             if (Xeque)
             {
@@ -190,7 +198,10 @@ namespace jogo
                                     );
 
                                     if (!Xeque)
+                                    {
+                                        Xeque = guardaXeque;
                                         return false;
+                                    }
                                 }
                             }
                         }
@@ -211,7 +222,7 @@ namespace jogo
                                 {
                                     destinoMatriz = new(i, j);
 
-                                    MoverPeca(
+                                    pecaCapturada = MoverPeca(
                                         origemMatriz?.ToPosicaoXadrez(),
                                         destinoMatriz.ToPosicaoXadrez()
                                     );
@@ -221,11 +232,14 @@ namespace jogo
                                     DesfazerMovimento(
                                         origemMatriz?.ToPosicaoXadrez(),
                                         destinoMatriz.ToPosicaoXadrez(),
-                                        null
+                                        pecaCapturada
                                     );
 
                                     if (!Xeque)
+                                    {
+                                        Xeque = guardaXeque;
                                         return false;
+                                    }
                                 }
                             }
                         }
@@ -254,7 +268,7 @@ namespace jogo
         public Peca? MoverPeca(PosicaoXadrez? origem, PosicaoXadrez? destino)
         {
             Boolean podeMover;
-            Peca? peca, pecaCapturada, torre, pecaEnpassant, promocao;
+            Peca? peca, pecaCapturada, torre, pecaEnpassant, peaoPromovido;
             Peao peaoEnpassant;
             PosicaoMatriz origemMatriz, destinoMatriz, posicaoEnpassant;
             Int32 guardaMovimentos;
@@ -550,12 +564,13 @@ namespace jogo
                          *   3-> é criada uma nova Dama;
                          *   4-> a nova Dama tem seu tabuleiro definido;
                          *   5-> a nova Dama tem sua quantidade de movimentos atualizada;
-                         *   6-> a nova Dama é inseridas nas peças em jogo;
-                         *   7-> a peça, anteriormente um peão, agora será Dama;
-                         *   8-> a nova peça é inserida no tabuleiro;
-                         *   9-> a nova peça tem sua posição no xadrez atualizada;
-                         *  10-> a nova peça tem seu movimento incrementado;
-                         *  11-> o turno é incrementado
+                         *   6-> a nova Dama é marcada como 'promovida';
+                         *   7-> a nova Dama é inserida nas peças em jogo;
+                         *   8-> a peça, anteriormente um peão, agora será Dama;
+                         *   9-> a nova peça é inserida no tabuleiro;
+                         *  10-> a nova peça tem sua posição no xadrez atualizada;
+                         *  11-> a nova peça tem seu movimento incrementado;
+                         *  12-> o turno é incrementado
                          */
                         if (destino.Linha == 8 || destino.Linha == 1)
                         {
@@ -563,18 +578,22 @@ namespace jogo
 
                             PecasEmJogo.Remove(peca);
                             Tabuleiro.RetirarPeca(origem);
-                            promocao = new Dama(JogadorAtual);
-                            promocao.SetTabuleiro(Tabuleiro, Tabuleiro);
-                            promocao.SetMovimentos(Tabuleiro, guardaMovimentos);
-                            PecasEmJogo.Add(promocao);
-                            peca = promocao;
+                            peaoPromovido = new Dama(JogadorAtual);
+                            peaoPromovido.SetTabuleiro(Tabuleiro, Tabuleiro);
+                            peaoPromovido.SetMovimentos(Tabuleiro, guardaMovimentos);
+                            peaoPromovido.SetPromovida(Tabuleiro, true);
+                            peca = peaoPromovido;
+                            PecasEmJogo.Add(peca);
                         }
                     }
 
                     Tabuleiro.ColocarPeca(peca, destino.Coluna, destino.Linha);
                     peca.SetPosicaoXadrez(Tabuleiro, destino);
                     peca.IncrementarMovimento(Tabuleiro);
-                    Turno++;                    
+
+                    // se for uma peça promovida, incrementa seu movimento pós-promoção ... 
+                    if (peca.Promovida) peca.IncrementarMovPromocao();
+                    Turno++;
                 }
                 else
                     throw new TabuleiroException("Posição de destino não permitida! ");
@@ -634,7 +653,6 @@ namespace jogo
                     }
                 }
             }
-
         }
 
         /* 
@@ -654,13 +672,12 @@ namespace jogo
          *  4-> atualizar a sua posição;
          *  5-> decrementar o seu movimento;
          *  6-> decrementar o turno;
-         *  7-> voltar ao jogador original.
          */
         private void DesfazerMovimento(
             PosicaoXadrez? origem, PosicaoXadrez? destino, Peca? pecaCapturada
         )
         {
-            Peca? peca;
+            Peca? peca, pecaPromovida;
             Peao peaoCapturadoEnpassant;
             PosicaoMatriz? origemMatriz, destinoMatriz, destinoEnpassant;
 
@@ -673,8 +690,44 @@ namespace jogo
                 peca.PosicaoXadrez != null
             )
             {
+                // pegando as posicões de origem e destino da peça mexida
+                // conforme a notação de matriz ...
+                origemMatriz = origem.ToPosicaoMatriz();
+                destinoMatriz = destino.ToPosicaoMatriz();
+
                 // retirar a peça mexida de seu destino ...
                 Tabuleiro.RetirarPeca(destino);
+
+                // #jogadaEspecial: Promoção
+                // se a peça mexida for uma Dama ...
+                if (peca is Dama)
+                {
+                    // se essa peça foi promovida
+                    // e não há movimentos pós-promoção, 
+                    // signfica que houve uma promoção nesse movimento de peça ...
+                    // teremos que desfazê-la ...
+                    if (peca.Promovida && peca.MovPromocao == 0)
+                    {
+                        pecaPromovida = new Peao(JogadorAtual);
+                        pecaPromovida.SetTabuleiro(Tabuleiro, Tabuleiro);
+                        pecaPromovida.SetMovimentos(Tabuleiro, peca.Movimentos);
+
+                        if (
+                            (JogadorAtual == Cor.Branco && destinoMatriz.Linha == 0) ||
+                            (JogadorAtual == Cor.Preto && destinoMatriz.Linha == 7)
+                        )
+                        {
+                            // remove a Dama do tabuleiro, mas não a coloca nas peças capturadas ...
+                            PecasEmJogo.Remove(peca);
+
+                            // a outrora Dama agora será um Peão ...
+                            peca = pecaPromovida;
+
+                            // e esse Peão é incluído nas peças em jogo ...
+                            PecasEmJogo.Add(peca);
+                        }
+                    }
+                }
 
                 // se há peça capturada ...
                 if (pecaCapturada != null)
@@ -692,9 +745,6 @@ namespace jogo
                             // mexida ...
                             if (peaoCapturadoEnpassant.CapturadoEnPassant)
                             {
-                                origemMatriz = origem.ToPosicaoMatriz();
-                                destinoMatriz = destino.ToPosicaoMatriz();
-
                                 destinoEnpassant = new(0, 0)
                                 {
                                     Linha = origemMatriz.Linha,
@@ -718,8 +768,6 @@ namespace jogo
                         // do destino da peça mexida ...
                         else
                             pecaCapturada.SetPosicaoXadrez(Tabuleiro, destino);
-
-
                     }
 
                     // remove a peça capturada das peças capturadas,
@@ -728,20 +776,18 @@ namespace jogo
                     PecasEmJogo.Add(pecaCapturada);
 
                     // e coloca a peça anteriormente capturada de volta no tabuleiro ...
-                    if (pecaCapturada.PosicaoXadrez != null)
-                        Tabuleiro.ColocarPeca(
-                            pecaCapturada,
-                            pecaCapturada.PosicaoXadrez.Coluna,
-                            pecaCapturada.PosicaoXadrez.Linha
-                        );
+                    Tabuleiro.ColocarPeca(pecaCapturada, destino.Coluna, destino.Linha);
                 }
 
                 // colocar a peça mexida, que foi retirada acima, de volta no tabuleiro ...
                 Tabuleiro.ColocarPeca(peca, origem.Coluna, origem.Linha);
                 peca.SetPosicaoXadrez(Tabuleiro, origem);
 
-                // decrementa o movimento da peça mexida ...
+                // decrementa o movimento da peça mexida
                 peca.DecrementarMovimento(Tabuleiro);
+
+                // se for uma peça promovida, decrementa seu movimento pós-promoção ... 
+                if (peca.Promovida) peca.DecrementarMovPromocao();
 
                 // decrementa o turno, pois na mexida o turno foi incrementado ...
                 Turno--;

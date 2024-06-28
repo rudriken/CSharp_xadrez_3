@@ -8,6 +8,32 @@ namespace tabuleiro
         public Cor Cor { get; protected set; } = cor;
         public Tabuleiro? Tabuleiro { get; protected set; } = null;
         public Int32 Movimentos { get; protected set; } = 0;
+        public Boolean Promovida { get; protected set; } = false;
+        public Int32 MovPromocao { get; protected set; } = -1;
+
+        public virtual void SetPromovida(Object objeto, Boolean promovido)
+        {
+            throw new TabuleiroException(
+                "Sem permissão para alterar a situação de 'promovido' da peça!" + 
+                "Somente a peça 'Peão' que pode ser promovida a Dama! "
+            );
+        }
+
+        public virtual void IncrementarMovPromocao()
+        {
+            throw new TabuleiroException(
+                "Sem permissão para alterar a quantidade de movimentos da peça" +
+                "depois de sua promoção! "
+            );
+        }
+
+        public virtual void DecrementarMovPromocao()
+        {
+            throw new TabuleiroException(
+                "Sem permissão para alterar a quantidade de movimentos da peça" +
+                "depois de sua promoção! "
+            );
+        }
 
         public void SetMovimentos(Object objeto, Int32 movimentos)
         {

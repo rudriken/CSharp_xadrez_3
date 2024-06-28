@@ -138,67 +138,46 @@ namespace tabuleiro
 
         public void ColocarPecas()
         {
-            //ColocarPeca(new Rei(Cor.Preto), 'D', 5);
-            //ColocarPeca(new Rei(Cor.Branco), 'h', 5);
-
-            //ColocarPeca(new Peao(Cor.Preto), 'a', 7);
-            //ColocarPeca(new Peao(Cor.Preto), 'b', 7);
-            //ColocarPeca(new Peao(Cor.Preto), 'c', 7);
-            //ColocarPeca(new Peao(Cor.Preto), 'd', 7);
-            //ColocarPeca(new Peao(Cor.Preto), 'e', 7);
-            //ColocarPeca(new Peao(Cor.Preto), 'f', 7);
-            //ColocarPeca(new Peao(Cor.Preto), 'g', 7);
-            //ColocarPeca(new Peao(Cor.Preto), 'h', 7);
-
-            //ColocarPeca(new Peao(Cor.Branco), 'a', 2);
-            //ColocarPeca(new Peao(Cor.Branco), 'b', 2);
-            //ColocarPeca(new Peao(Cor.Branco), 'c', 2);
-            //ColocarPeca(new Peao(Cor.Branco), 'd', 2);
-            //ColocarPeca(new Peao(Cor.Branco), 'e', 2);
-            //ColocarPeca(new Peao(Cor.Branco), 'f', 2);
-            //ColocarPeca(new Peao(Cor.Branco), 'g', 2);
-            //ColocarPeca(new Peao(Cor.Branco), 'h', 2);
-
-            //ColocarPeca(new Peao(Cor.Branco), 'h', 5);
-            //ColocarPeca(new Peao(Cor.Preto), 'd', 4);
-
-
-            ColocarPeca(new Torre(Cor.Branco), 'A', 1);
-            ColocarPeca(new Cavalo(Cor.Branco), 'B', 1);
-            ColocarPeca(new Bispo(Cor.Branco), 'C', 1);
-            ColocarPeca(new Dama(Cor.Branco), 'D', 1);
-            ColocarPeca(new Rei(Cor.Branco), 'E', 1);
-            ColocarPeca(new Bispo(Cor.Branco), 'F', 1);
-            ColocarPeca(new Cavalo(Cor.Branco), 'G', 1);
-            ColocarPeca(new Torre(Cor.Branco), 'H', 1);
-            ColocarPeca(new Peao(Cor.Branco), 'A', 2);
-            ColocarPeca(new Peao(Cor.Branco), 'B', 2);
-            ColocarPeca(new Peao(Cor.Branco), 'C', 2);
-            ColocarPeca(new Peao(Cor.Branco), 'D', 2);
-            ColocarPeca(new Peao(Cor.Branco), 'E', 2);
+            //ColocarPeca(new Torre(Cor.Branco), 'A', 1);
+            //ColocarPeca(new Cavalo(Cor.Branco), 'B', 1);
+            //ColocarPeca(new Bispo(Cor.Branco), 'C', 1);
+            //ColocarPeca(new Dama(Cor.Branco), 'D', 1);
+            //ColocarPeca(new Rei(Cor.Branco), 'E', 1);
+            //ColocarPeca(new Bispo(Cor.Branco), 'F', 1);
+            //ColocarPeca(new Cavalo(Cor.Branco), 'G', 1);
+            //ColocarPeca(new Torre(Cor.Branco), 'H', 1);
+            //ColocarPeca(new Peao(Cor.Branco), 'A', 2);
+            //ColocarPeca(new Peao(Cor.Branco), 'B', 2);
+            //ColocarPeca(new Peao(Cor.Branco), 'C', 2);
+            //ColocarPeca(new Peao(Cor.Branco), 'D', 2);
+            //ColocarPeca(new Peao(Cor.Branco), 'E', 2);
             //ColocarPeca(new Peao(Cor.Branco), 'F', 2);
             //ColocarPeca(new Peao(Cor.Branco), 'G', 2);
-            ColocarPeca(new Peao(Cor.Branco), 'H', 2);
+            //ColocarPeca(new Peao(Cor.Branco), 'H', 2);
 
-            ColocarPeca(new Torre(Cor.Preto), 'A', 8);
-            ColocarPeca(new Cavalo(Cor.Preto), 'B', 8);
-            ColocarPeca(new Bispo(Cor.Preto), 'C', 8);
-            ColocarPeca(new Dama(Cor.Preto), 'D', 8);
-            ColocarPeca(new Rei(Cor.Preto), 'E', 8);
-            ColocarPeca(new Bispo(Cor.Preto), 'g', 5);
-            ColocarPeca(new Cavalo(Cor.Preto), 'G', 8);
+            //ColocarPeca(new Torre(Cor.Preto), 'A', 8);
+            //ColocarPeca(new Cavalo(Cor.Preto), 'B', 8);
+            //ColocarPeca(new Bispo(Cor.Preto), 'C', 8);
+            //ColocarPeca(new Dama(Cor.Preto), 'D', 8);
+            //ColocarPeca(new Rei(Cor.Preto), 'E', 8);
+            //ColocarPeca(new Bispo(Cor.Preto), 'F', 8);
+            //ColocarPeca(new Cavalo(Cor.Preto), 'G', 8);
+            //ColocarPeca(new Torre(Cor.Preto), 'H', 8);
+            //ColocarPeca(new Peao(Cor.Preto), 'A', 7);
+            //ColocarPeca(new Peao(Cor.Preto), 'B', 7);
+            //ColocarPeca(new Peao(Cor.Preto), 'C', 7);
+            //ColocarPeca(new Peao(Cor.Preto), 'D', 7);
+            //ColocarPeca(new Peao(Cor.Preto), 'E', 7);
+            //ColocarPeca(new Peao(Cor.Preto), 'F', 7);
+            //ColocarPeca(new Peao(Cor.Preto), 'G', 7);
+            //ColocarPeca(new Peao(Cor.Preto), 'H', 7);
+
+
+            ColocarPeca(new Rei(Cor.Branco), 'a', 4);
+            ColocarPeca(new Peao(Cor.Branco), 'B', 7);
+
+            ColocarPeca(new Rei(Cor.Preto), 'h', 7);
             ColocarPeca(new Torre(Cor.Preto), 'H', 8);
-            ColocarPeca(new Peao(Cor.Preto), 'A', 7);
-            ColocarPeca(new Peao(Cor.Preto), 'B', 7);
-            ColocarPeca(new Peao(Cor.Preto), 'C', 7);
-            ColocarPeca(new Peao(Cor.Preto), 'D', 7);
-            ColocarPeca(new Peao(Cor.Preto), 'E', 7);
-            ColocarPeca(new Peao(Cor.Preto), 'F', 7);
-            ColocarPeca(new Peao(Cor.Preto), 'G', 7);
-            ColocarPeca(new Peao(Cor.Preto), 'H', 7);
-
-
-
         }
     }
 }
